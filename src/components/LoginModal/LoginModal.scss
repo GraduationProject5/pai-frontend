@@ -1,0 +1,88 @@
+@import "../../assets/scss/mixin";
+@import "../../assets/scss/variables";
+@import "../../assets/scss/base";
+
+.modal {
+  @include center-modal;
+
+  .flip_box {
+    position: relative;
+    height: auto;
+
+    //.side {
+    //  @include transition(.8s);
+    //  transform-style: preserve-3d;
+    //  backface-visibility: hidden;
+    //  height: auto;
+    //}
+
+    .login {
+      width: 100%;
+    }
+
+    .register {
+      width: 100%;
+    }
+
+    .visible {
+      display: block;
+    }
+
+    .invisible {
+      display: none;
+    }
+
+    :global {
+      .ant-form-item-control {
+        line-height: 45px;
+
+        .ant-input-lg {
+          height: 45px;
+          font-size: $small-font-size;
+          padding-left: 30px;
+        }
+      }
+    }
+
+    .form {
+      max-width: 300px;
+      margin: 0 auto;
+
+      h3 {
+        font-size: 24px;
+        color: $theme-purple-color-light;
+        padding: 40px 0;
+      }
+
+      .form_button {
+        @include theme-btn;
+        width: 100%;
+      }
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 65px;
+      height: 65px;
+      width: 100%;
+      background-color: $gray-color-white;
+      font-size: $small-font-size;
+      line-height: 65px;
+      border-bottom-right-radius: 4px;
+      border-bottom-left-radius: 4px;
+
+      a {
+        color: $theme-purple-color-light;
+        text-decoration: underline;
+        margin-left: 8px;
+      }
+
+      span {
+        color: $gray-color;
+        text-decoration: none;
+      }
+    }
+  }
+}

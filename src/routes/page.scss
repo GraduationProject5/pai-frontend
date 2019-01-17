@@ -1,0 +1,26 @@
+@import "../assets/scss/mixin";
+@import "../assets/scss/variables";
+@import "../assets/scss/base";
+
+.picture_card_list {
+  display: flex;
+  justify-content: center;
+  padding-top: 50px;
+}
+
+.index {
+  width: 100%;
+  height: 100%;
+
+  img {
+    @include cover-img;
+  }
+
+  .welcome {
+    font-size: 48px;
+    color: $gray-color-ultra-dark;
+    position: absolute;
+    top: 200px;
+    left: 50px;
+  }
+}

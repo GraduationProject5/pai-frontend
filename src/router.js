@@ -7,11 +7,16 @@ function RouterConfig({history, app}) {
     app,
     component: () => import('./routes/IndexPage'),
   });
+  const ExperimentPage = dynamic({
+    app,
+    component: () => import('./routes/ExperimentPage'),
+  });
 
   return (
     <Router history={history}>
       <Switch>
         <Route path="/" exact component={IndexPage}/>
+        <Route path="/experiment" exact component={ExperimentPage}/>
       </Switch>
     </Router>
   );

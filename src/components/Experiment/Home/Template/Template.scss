@@ -1,0 +1,40 @@
+@import "../../../../assets/scss/mixin";
+@import "../../../../assets/scss/variables";
+@import "../../../../assets/scss/base";
+
+.container {
+  width: 188px;
+  height: 266px;
+  background-color: $white-color;
+  padding: $card-padding;
+  box-shadow: $card-box-shadow;
+
+  .level {
+    border-bottom: $separate-border;
+    font-size: $small-font-size;
+    font-weight: $font-weight-medium;
+    color: $gray-color-dark;
+  }
+
+  h3 {
+    font-size: $base-font-size;
+    font-weight: $font-weight-bold;
+    color: $gray-color-ultra-dark;
+  }
+
+  img {
+    width: 168px;
+    height: 100px;
+
+    //@include fill-img;
+  }
+
+  .desc {
+    font-size: $small-font-size;
+    font-weight: $font-weight-medium;
+    color: $gray-color-dark;
+    width: 172px;
+
+    @include line-wrap(3)
+  }
+}

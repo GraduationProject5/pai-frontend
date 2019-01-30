@@ -1,0 +1,32 @@
+@import "../../../../../assets/scss/mixin";
+@import "../../../../../assets/scss/variables";
+@import "../../../../../assets/scss/base";
+
+.container {
+
+  .hint {
+    background-color: #ffffb8;
+    color: $gray-color-ultra-dark;
+    font-size: $small-font-size;
+    height: 36px;
+    line-height: 36px;
+    text-align: center;
+    margin-bottom: 12px;
+  }
+
+  .upload {
+    display: block;
+    width: 100%;
+    margin-bottom: 30px;
+
+    :global {
+      .ant-upload {
+        width: 100%;
+      }
+    }
+
+    .uploadBtn {
+      width: 100%;
+    }
+  }
+}

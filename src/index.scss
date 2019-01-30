@@ -1,0 +1,40 @@
+@import "./assets/scss/mixin";
+@import "./assets/scss/variables";
+@import "./assets/scss/base";
+
+
+html, body {
+  height: 100%;
+  background-color: $gray-color-ultra-light;
+}
+
+:global {
+  .container {
+    position: absolute;
+    left: 0;
+    top: 50px;
+    bottom: 0;
+    width: 100%;
+  }
+
+  //.ant-modal-wrap .ant-modal .ant-modal-content {
+  //  .ant-modal-body {
+  //    padding: 0;
+  //  }
+  //
+  //  .ant-modal-close {
+  //    line-height: 30px;
+  //    top: -20px;
+  //    right: -25px;
+  //    color: $white-color;
+  //
+  //    span {
+  //      width: 30px;
+  //      height: 30px;
+  //      line-height: 30px;
+  //      font-size: $base-font-size;
+  //      text-align: center;
+  //    }
+  //  }
+  //}
+}

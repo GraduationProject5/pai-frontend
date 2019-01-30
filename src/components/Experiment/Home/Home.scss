@@ -1,0 +1,27 @@
+@import "../../../assets/scss/mixin";
+@import "../../../assets/scss/variables";
+@import "../../../assets/scss/base";
+
+
+.container {
+  height: 100%;
+  overflow-y: scroll;
+}
+
+.list {
+  width: calc(188px * 4 + 24px * 3);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  flex-direction: row;
+
+  .item {
+    //flex-basis: calc((100% - 24px * 3) / 4);
+    margin-bottom: 24px;
+  }
+
+  .item:not(:nth-child(4n)) {
+    margin: 0 24px 24px 0;
+  }
+}

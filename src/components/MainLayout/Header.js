@@ -51,24 +51,9 @@ class Header extends React.Component {
               HOME
             </Link>
           </MenuItem>
-          <MenuItem key="/follow">
-            <Link to="/follow">
-              FOLLOW
-            </Link>
-          </MenuItem>
-          <MenuItem key="/activity">
-            <Link to="/activity">
-               ACTIVITY
-             </Link>
-          </MenuItem>
-          <MenuItem key="/liked">
-            <Link to="/liked">
-              LIKED
-            </Link>
-          </MenuItem>
-          <MenuItem key="/message">
-            <Link to="/message">
-              MESSAGE
+          <MenuItem key="/experiment">
+            <Link to="/experiment">
+              实验
             </Link>
           </MenuItem>
         </Menu>
@@ -111,13 +96,14 @@ class Header extends React.Component {
               </Button>
               :
               <div className={styles.action_button}>
-                <Button className={styles.login_button} onClick={() => this.setLoginModalVisible(true, 'login')}>Log
-                  in</Button>
+                <Button className={styles.login_button} onClick={() => this.setLoginModalVisible(true, 'login')}>
+                  登录
+                </Button>
                 <Button
                   type="primary" className={styles.upload_button}
                   onClick={() => this.setLoginModalVisible(true, 'register')}
                 >
-                  Join free
+                  注册
                 </Button>
               </div>
           }

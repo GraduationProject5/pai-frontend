@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Example = () => {
+const Setting = () => {
   return (
     <div>
       Example
@@ -8,8 +8,8 @@ const Example = () => {
   );
 };
 
-Example.propTypes = {
+Setting.propTypes = {
 };
 
-export default Example;
+export default Setting;
 

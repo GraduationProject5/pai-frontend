@@ -1,6 +1,3 @@
-/**
- * Created by Hitigerzzz on 2017/11/6.
- */
 import React from 'react';
 import Header from './Header';
 

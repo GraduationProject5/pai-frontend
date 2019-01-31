@@ -3,5 +3,24 @@
 @import "../../../../assets/scss/base";
 
 .container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
+  .createExperimentBtn {
+    background-color: $theme-purple-color-light;
+    font-weight: 400;
+    border: none;
+    font-size: 18px;
+    height: 45px;
+    line-height: 45px;
+    color: $white-color;
+
+    &:hover {
+      cursor: pointer;
+      background-color: lighten($theme-purple-color-light, 3%);
+    }
+  }
 }

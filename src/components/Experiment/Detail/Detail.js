@@ -5,6 +5,7 @@ import Experiment from './Experiment/Experiment';
 import Model from './Model/Model';
 import Database from './Database/Database';
 import Component from './Component/Component';
+import ModelFlow from './ModelFlow/ModelFlow';
 
 const TextArea = Input.TextArea;
 
@@ -23,13 +24,13 @@ class Detail extends React.Component {
 
     return (
       <div className={styles.container}>
-        <div className={styles.mode}>
-          {
-            <ModeModule />
-          }
-        </div>
+        {/*<div className={styles.mode}>*/}
+          {/*{*/}
+            {/*<ModeModule />*/}
+          {/*}*/}
+        {/*</div>*/}
         <div className={styles.detail}>
-          实验详情展示
+          <ModelFlow />
         </div>
         <div className={styles.property}>
           <h3>实验属性</h3>

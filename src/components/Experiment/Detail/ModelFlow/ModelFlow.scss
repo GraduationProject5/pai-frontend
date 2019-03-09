@@ -1,0 +1,69 @@
+@import "../../../../assets/scss/mixin";
+@import "../../../../assets/scss/variables";
+@import "../../../../assets/scss/base";
+
+
+.editor canvas {
+  display: block;
+  height: 100%;
+}
+.editor{
+  height: 100%;
+  position: relative;
+  width: 100%;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+
+.panelTypeIcon{
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 8px;
+  background: url(https://gw.alipayobjects.com/zos/rmsportal/czNEJAmyDpclFaSucYWB.svg)
+}
+
+.panel{
+  display: none
+}
+
+.panel-title{
+  height: 32px;
+  border-top: 1px solid #DCE3E8;
+  border-bottom: 1px solid #DCE3E8;
+  background: #EBEEF2;
+  color: #000;
+  line-height: 28px;
+  padding-left: 12px;
+}
+
+.input{
+  margin-left: 16px;
+}
+.name-input{
+  width: 120px;
+}
+.width-input{
+  width: 52px;
+}
+.height-input{
+  width: 52px;
+}
+.block-container{
+  padding: 16px 8px;
+}
+.bottom-container{
+  position: relative;
+}
+
+.color-picker{
+  vertical-align: middle;
+  margin-left: 16px;
+}
+.p{
+  margin-bottom: 12px;
+}

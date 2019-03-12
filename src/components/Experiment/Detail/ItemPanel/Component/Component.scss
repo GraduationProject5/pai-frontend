@@ -1,0 +1,99 @@
+@import "../../../../../assets/scss/mixin";
+@import "../../../../../assets/scss/variables";
+@import "../../../../../assets/scss/base";
+
+.container {
+  font-size: $small-font-size;
+
+  .parent {
+    padding: 0;
+
+    :global {
+      .ant-tree-switcher {
+        line-height: 40px;
+      }
+
+      .ant-tree-node-content-wrapper {
+        height: 40px;
+        line-height: 40px;
+      }
+
+      .ant-tree-node-content-wrapper::before {
+        height: 40px !important;
+      }
+
+      .ant-tree-iconEle {
+        line-height: 40px;
+      }
+    }
+  }
+
+  .leaf {
+    height: 40px;
+    line-height: 40px;
+    padding: 4px 0;
+
+    :global {
+      .ant-tree-switcher {
+        line-height: 40px;
+      }
+
+      .ant-tree-node-content-wrapper {
+        height: 40px;
+        line-height: 40px;
+      }
+
+      .ant-tree-node-content-wrapper::before {
+        height: 40px !important;
+      }
+
+      span.ant-tree-iconEle {
+        width: 0 !important;
+        height: 0 !important;
+        display: none;
+      }
+    }
+  }
+
+
+  .item {
+    color: rgba(0,0,0,0.65);
+    border-radius: 4px;
+    width: 160px;
+    height: 28px;
+    line-height: 26px;
+    padding: 4px 8px 4px 0;
+    border: 1px solid rgba(0,0,0,0);
+    list-style-type: none;
+
+    &:hover{
+      background: white;
+      border: 1px solid #CED4D9;
+      cursor: move;
+    }
+
+    .panelTypeIcon{
+      width: 16px;
+      height: 16px;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 8px;
+      background: url(https://gw.alipayobjects.com/zos/rmsportal/czNEJAmyDpclFaSucYWB.svg)
+    }
+
+    img{
+      width: 92px;
+      height: 96px;
+      padding: 4px;
+      margin-left: 4px;
+      border-radius: 2px;
+      border: 1px solid rgba(0,0,0,0);
+
+      &:hover{
+        cursor: move;
+        border: 1px solid #ccc;
+      }
+    }
+  }
+
+}

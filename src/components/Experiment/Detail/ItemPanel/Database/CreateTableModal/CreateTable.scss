@@ -1,0 +1,13 @@
+@import "../../../../../../assets/scss/mixin";
+@import "../../../../../../assets/scss/variables";
+@import "../../../../../../assets/scss/base";
+
+.form {
+  width: 100%;
+
+  .iconBtn {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}

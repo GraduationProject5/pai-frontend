@@ -1,12 +1,10 @@
 import React from 'react';
 import Navigator from './Navigator.js';
-import ToolBar from './Toolbar.js';
 import Contextmenu from './Contextmenu.js';
-import Itempanel from './Itempanel.js';
-import Detailpanel from './Detailpanel.js';
+import Itempanel from '../ItemPanel/Itempanel.js';
+import PropertyPanel from './PropertyPanel.js';
 import Editor from './Editor.js';
-import Page from './Page.js';
-import {Checkbox, Input} from 'antd';
+import Canvas from './Canvas.js';
 import G6Editor from '@antv/g6-editor';
 import styles from './ModelFlow.scss';
 
@@ -202,81 +200,43 @@ export default class BaseFlowEditor extends Editor {
 
   render() {
     const {curZoom, minZoom, maxZoom, selectedModel, inputingLabel} = this.state;
-    const labelInput = (
-      <div className={styles.p}>
-        名称：
-        <Input
-          size="small"
-          className={`${styles.input} ${styles["name-input"]}`}
-          value={inputingLabel ? inputingLabel : selectedModel.label}
-          onChange={ev => {
-            this.setState({
-              inputingLabel: ev.target.value
-            });
-          }}
-          onBlur={ev => {
-            this.updateGraph('label', ev.target.value);
-            this.setState({
-              inputingLabel: null
-            });
-          }}
-        />
-      </div>
-    );
-    return <div className={styles.editor}>
-      <ToolBar editor={this.editor}/>
-      <div style={{height: '42px'}}/>
-      <div className={styles["bottom-container"]}>
-        <Contextmenu editor={this.editor}/>
-        <Itempanel editor={this.editor} content={
-          <ul>
-            <li className="getItem" data-shape="k-means" data-type="node" data-size="170*34">
-              <span className={styles.panelTypeIcon}/>K 均值聚类
-            </li>
-            <li className="getItem" data-shape="random-forest" data-type="node" data-size="170*34">
-              <span className={styles.panelTypeIcon}/>随机森林
-            </li>
-            <li className="getItem" data-shape="PS-SMART" data-type="node" data-size="170*34">
-              <span className={styles.panelTypeIcon}/>PS-SMART 分类
-            </li>
-            <li className="getItem" data-shape="read-data-base" data-type="node" data-size="170*34">
-              <span className={styles.panelTypeIcon}/>读数据表
-            </li>
-            <li className="getItem" data-shape="Bayes" data-type="node" data-size="170*34">
-              <span className={styles.panelTypeIcon}/>朴素贝叶斯
-            </li>
-          </ul>
-        }/>
-        <Detailpanel editor={this.editor} content={
-          <div>
-            <div data-status="node-selected" className={`${styles.panel} pannel`} id="node_detailpannel">
-              <div className={styles["panel-title"]}>模型详情</div>
-              <div className={styles["block-container"]}>
-                {labelInput}
-              </div>
-            </div>
-            <div data-status="group-selected" className={`${styles.panel} pannel`} id="node_detailpannel">
-              <div className={styles["panel-title"]}>群组详情</div>
-              <div className={styles["block-container"]}>
-                {labelInput}
-              </div>
-            </div>
-            <div data-status="canvas-selected" className={`${styles.panel} pannel`} id="canvas_detailpannel">
-              <div className={styles["panel-title"]}>画布</div>
-              <div className={styles["block-container"]}>
-                <Checkbox onChange={this.toggleGrid.bind(this)}>网格对齐</Checkbox>
-              </div>
-            </div>
-          </div>
-        }/>
-        <Navigator
-          editor={this.editor}
-          curZoom={curZoom}
-          minZoom={minZoom}
-          maxZoom={maxZoom}
-          changeZoom={this.changeZoom.bind(this)}/>
-        <Page editor={this.editor}/>
-      </div>
-    </div>;
+    console.log(selectedModel);
+    const mode = this.props.mode;
+    // const labelInput = (
+    //   <div className={styles.p}>
+    //     名称：
+    //     <Input
+    //       size="small"
+    //       className={`${styles.input} ${styles["name-input"]}`}
+    //       value={inputingLabel ? inputingLabel : selectedModel.label}
+    //       onChange={ev => {
+    //         this.setState({
+    //           inputingLabel: ev.target.value
+    //         });
+    //       }}
+    //       onBlur={ev => {
+    //         this.updateGraph('label', ev.target.value);
+    //         this.setState({
+    //           inputingLabel: null
+    //         });
+    //       }}
+    //     />
+    //   </div>
+    // );
+    return (
+      <div className={styles.editor}>
+        <Contextmenu editor={this.editor} selectedModel={selectedModel}/>
+        <Itempanel editor={this.editor} mode={mode} className={styles.itemPanel}/>
+        <Canvas editor={this.editor} className={styles.canvas}/>
+        <div className={styles.detail}>
+          <PropertyPanel editor={this.editor} selectedModel={selectedModel} className={styles.propertyPanel}/>
+          <Navigator
+            editor={this.editor}
+            curZoom={curZoom}
+            minZoom={minZoom}
+            maxZoom={maxZoom}
+            changeZoom={this.changeZoom.bind(this)}/>
+        </div>
+      </div>);
   }
 }

@@ -7,21 +7,13 @@ import styles from './Navigator.scss';
 class Navigator extends React.Component {
   createMinimap(container) {
     return new G6Editor.Minimap({
-      container,
-      height: 120,
-      width: 200
+      container
     });
   }
 
-  getCreateMinimap() {
-    const {createMinimap} = this.props;
-    return createMinimap ? createMinimap : this.createMinimap;
-  }
-
   componentDidMount() {
-    const {editor} = this.props;
-    const createMinimap = this.getCreateMinimap();
-    const minimap = createMinimap(this.minimapContainer);
+    const editor = this.props.editor;
+    const minimap = this.createMinimap(this.minimapContainer);
     editor.add(minimap);
   }
 
@@ -59,7 +51,7 @@ class Navigator extends React.Component {
         <div id="minimap" className={styles.miniMap} ref={el => {
           this.minimapContainer = el;
         }}/>
-        <div id="zoom-slider">
+        <div id="zoom-slider" className={styles.zoomSlider}>
           <Slider value={(curZoom - minZoom) / (maxZoom - minZoom) * 100}
                   className={styles.slider}
                   tipFormatter={this.sliderTipFormatter.bind(this)}
@@ -79,8 +71,7 @@ Navigator.propTypes = {
   minZoom: PropTypes.number,
   maxZoom: PropTypes.number,
   curZoom: PropTypes.number,
-  changeZoom: PropTypes.function,
-  createMinimap: PropTypes.function,
+  changeZoom: PropTypes.func,
   editor: PropTypes.object
 };
 export default Navigator;

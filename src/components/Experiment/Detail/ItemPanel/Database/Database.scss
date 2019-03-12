@@ -1,0 +1,42 @@
+@import "../../../../../assets/scss/mixin";
+@import "../../../../../assets/scss/variables";
+@import "../../../../../assets/scss/base";
+
+.container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .tableList {
+
+    .tableItem {
+      height: 48px;
+      line-height: 48px;
+      padding: 8px;
+      display: flex;
+      align-items: center;
+
+      &:hover {
+        cursor: pointer;
+        background-color: $theme-purple-color-ultra-light;
+      }
+    }
+  }
+
+  .createTableBtn {
+    background-color: $theme-purple-color-light;
+    font-weight: 400;
+    border: none;
+    font-size: 18px;
+    height: 45px;
+    line-height: 45px;
+    color: $white-color;
+
+    &:hover {
+      cursor: pointer;
+      background-color: lighten($theme-purple-color-light, 3%);
+    }
+  }
+}

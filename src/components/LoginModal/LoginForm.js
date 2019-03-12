@@ -30,33 +30,33 @@ class LoginForm extends React.Component {
         className={`${styles.login} ${visible ? styles.visible : styles.invisible}`}
       >
         <Form onSubmit={this.handleSubmit} className={styles.form}>
-          <h3>Log in to your account</h3>
+          <h3>登录你的账号</h3>
           <FormItem>
             {getFieldDecorator('username', {
-              rules: [{ required: true, message: 'Please input your username!' }],
+              rules: [{ required: true, message: '请输入用户名' }],
             })(
-              <Input prefix={<Icon type="user" style={{ fontSize: 18, color: '#79589F' }} />} placeholder="Username" />,
+              <Input prefix={<Icon type="user" style={{ fontSize: 18, color: '#79589F' }} />} placeholder="用户名" />,
             )}
           </FormItem>
           <FormItem>
             {getFieldDecorator('password', {
-              rules: [{ required: true, message: 'Please input your Password!' }],
+              rules: [{ required: true, message: '请输入密码' }],
             })(
               <Input
                 prefix={<Icon type="lock" style={{ fontSize: 18, color: '#79589F' }} />} type="password"
-                placeholder="Password"
+                placeholder="密码"
               />,
             )}
           </FormItem>
           <FormItem>
             <Button type="primary" htmlType="submit" className={styles.form_button}>
-              Log in
+              登录
             </Button>
           </FormItem>
         </Form>
         <div className={styles.footer}>
-          <a href="">Forgot password</a>
-          <a onClick={goTo}>Join free</a>
+          <a href="">忘记密码</a>
+          <a onClick={goTo}>注册</a>
         </div>
       </div>
     );

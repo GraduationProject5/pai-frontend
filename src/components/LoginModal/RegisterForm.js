@@ -32,45 +32,44 @@ class RegisterForm extends React.Component {
         className={`${styles.register} ${visible ? styles.visible : styles.invisible}`}
       >
         <Form onSubmit={this.handleSubmit} className={styles.form}>
-          <h3>Join Us!</h3>
+          <h3>注册账号</h3>
           <FormItem>
             {getFieldDecorator('username', {
-              rules: [{ required: true, message: 'Please input your username!' }],
+              rules: [{ required: true, message: '请输入用户名' }],
             })(
-              <Input prefix={<Icon type="user" style={{ fontSize: 18, color: '#79589F' }} />} placeholder="Username" />,
+              <Input prefix={<Icon type="user" style={{ fontSize: 18, color: '#79589F' }} />} placeholder="用户名" />,
             )}
           </FormItem>
           <FormItem>
             {getFieldDecorator('password', {
-              rules: [{ required: true, message: 'Please input your Password!' }],
+              rules: [{ required: true, message: '请输入密码!' }],
             })(
               <Input
                 prefix={<Icon type="lock" style={{ fontSize: 18, color: '#79589F' }} />} type="password"
-                placeholder="Password"
+                placeholder="密码"
               />,
             )}
           </FormItem>
           <FormItem>
             {getFieldDecorator('repassword', {
-              rules: [{ required: true, message: 'Please input your Password!' }],
+              rules: [{ required: true, message: '请输入密码!' }],
             })(
               <Input
                 prefix={<Icon type="lock" style={{ fontSize: 18, color: '#79589F' }} />} type="password"
-                placeholder="Confirm Password"
+                placeholder="确认密码"
               />,
             )}
           </FormItem>
           <FormItem>
             <Button type="primary" htmlType="submit" className={styles.form_button}>
-              Sign up
+              注册
             </Button>
           </FormItem>
         </Form>
         <div className={styles.footer}>
           <span />
           <div>
-            <span>Already have an account?</span>
-            <a onClick={goTo}>Log in</a>
+            <a onClick={goTo}>登录</a>
           </div>
         </div>
       </div>

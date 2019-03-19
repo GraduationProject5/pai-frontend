@@ -12,8 +12,8 @@ class LoginForm extends React.Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         const data = {
-          username: values.username,
-          password: values.password,
+          email: values.email,
+          password: values.loginPassword,
         };
         this.props.dispatch({
           type: 'user/login',
@@ -32,14 +32,14 @@ class LoginForm extends React.Component {
         <Form onSubmit={this.handleSubmit} className={styles.form}>
           <h3>登录你的账号</h3>
           <FormItem>
-            {getFieldDecorator('username', {
-              rules: [{ required: true, message: '请输入用户名' }],
+            {getFieldDecorator('email', {
+              rules: [{ required: true, message: '请输入邮箱' }],
             })(
-              <Input prefix={<Icon type="user" style={{ fontSize: 18, color: '#79589F' }} />} placeholder="用户名" />,
+              <Input prefix={<Icon type="user" style={{ fontSize: 18, color: '#79589F' }} />} placeholder="邮箱" />,
             )}
           </FormItem>
           <FormItem>
-            {getFieldDecorator('password', {
+            {getFieldDecorator('loginPassword', {
               rules: [{ required: true, message: '请输入密码' }],
             })(
               <Input

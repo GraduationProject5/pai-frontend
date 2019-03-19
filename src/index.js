@@ -11,6 +11,8 @@ const app = dva({
 // 2. Plugins
 // app.use({});
 app.model(require('./models/user').default);
+app.model(require('./models/data').default);
+app.model(require('./models/experiment').default);
 // 4. Router
 app.router(require('./router').default);
 

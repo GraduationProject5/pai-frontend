@@ -42,7 +42,7 @@ class LoginModal extends React.Component {
       <Modal
         visible={visible}
         footer={null}
-        width={430}
+        width={500}
         wrapClassName={styles.modal}
         onCancel={() => setModalVisible(false)}
       >

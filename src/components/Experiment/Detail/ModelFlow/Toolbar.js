@@ -17,11 +17,19 @@ class Toolbar extends React.Component {
     editor.add(toolbar);
   }
 
+  run = () => {
+    console.log("运行项目");
+    const data = this.props.editor.getCurrentPage().save();
+    console.log(data);
+  };
+
   render() {
     return (
       <div className={styles.container} ref={el => {
         this.toolbarContainer = el;
       }}>
+        <Icon type="caret-right" className={styles.command} title="运行" onClick={this.run}/>
+        <span className={styles.separator}/>
         <Icon type="undo" data-command="undo" className={`${styles.command} command`} title="撤销"/>
         <Icon type="redo" data-command="redo" className={`${styles.command} command`} title="重做"/>
         <span className={styles.separator}/>

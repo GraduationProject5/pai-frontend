@@ -1,6 +1,7 @@
 import React from 'react';
-import {Tree, Icon} from 'antd';
-import styles from './Component.scss';
+import {Tree} from 'antd';
+import styles from '../Itempanel.scss';
+import componentImgUrl from '../../../../../assets/img/component.svg';
 
 const DirectoryTree = Tree.DirectoryTree;
 const TreeNode = Tree.TreeNode;
@@ -17,22 +18,22 @@ class Component extends React.Component {
 
   itemMock = [
     <span className={`${styles.item} getItem`} data-name="K 均值聚类" data-shape="k-means" data-type="node" data-size="170*34">
-      <span className={styles.panelTypeIcon}/>K 均值聚类
+      <img src={componentImgUrl} className={styles.typeImg}/>K 均值聚类
     </span>,
     <span className={`${styles.item} getItem`} data-name="随机森林" data-shape="random-forest" data-type="node" data-size="170*34">
-      <span className={styles.panelTypeIcon}/>随机森林
+      <img src={componentImgUrl} className={styles.typeImg}/>随机森林
     </span>,
     <span className={`${styles.item} getItem`} data-name="PS-SMART 分类" data-shape="PS-SMART" data-type="node" data-size="170*34">
-      <span className={styles.panelTypeIcon}/>PS-SMART 分类
+      <img src={componentImgUrl} className={styles.typeImg}/>PS-SMART 分类
     </span>,
-    <span className={`${styles.item} getItem`} data-name="读数据表" data-shape="read-data-base" data-type="node" data-size="170*34">
-      <span className={styles.panelTypeIcon}/>读数据表
+    <span className={`${styles.item} getItem`} data-name="读数据表" data-shape="read-data-table" data-type="node" data-size="170*34">
+      <img src={componentImgUrl} className={styles.typeImg}/>读数据表
     </span>,
     <span className={`${styles.item} getItem`} data-name="朴素贝叶斯" data-shape="Bayes" data-type="node" data-size="170*34">
-      <span className={styles.panelTypeIcon}/>朴素贝叶斯
+      <img src={componentImgUrl} className={styles.typeImg}/>朴素贝叶斯
     </span>,
     <span className={`${styles.item} getItem`} data-name="test" data-shape="test" data-type="node" data-size="170*34">
-      <span className={styles.panelTypeIcon}/>test
+      <img src={componentImgUrl} className={styles.typeImg}/>test
     </span>,
   ];
 

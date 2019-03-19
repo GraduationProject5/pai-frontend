@@ -6,37 +6,107 @@ const FormItem = Form.Item;
 
 class UploadData extends React.Component {
 
-  render() {
-    const { getFieldDecorator, getFieldValue } = this.props.form;
-    const props = {
-      name: 'file',
-      action: '//jsonplaceholder.typicode.com/posts/',
-      headers: {
-        authorization: 'authorization-text',
-      },
-      onChange(info) {
-        if (info.file.status !== 'uploading') {
-          console.log(info.file, info.fileList);
-        }
-        if (info.file.status === 'done') {
-          message.success(`${info.file.name} file uploaded successfully`);
-        } else if (info.file.status === 'error') {
-          message.error(`${info.file.name} file upload failed.`);
-        }
-      },
+  constructor(props) {
+    super(props);
+    this.state = {
+      dataFile: '',
+      fileList: []
     };
+  }
+
+  componentDidMount() {
+    this.props.onRef(this);
+  }
+
+  uploadProps = {
+    name: 'dataFile',
+    action: '//jsonplaceholder.typicode.com/posts/',
+    headers: {
+      authorization: 'authorization-text',
+    },
+    onChange: ({ file, fileList }) => {
+      if (file && file.name.indexOf(".csv") !== -1) {
+        if (file.status === 'done') {
+          console.log("onChange", file);
+          this.setState({
+            dataFile: file,
+            fileList
+          });
+          message.success("上传文件成功");
+        } else if (file.status === 'error') {
+          message.error("上传文件失败");
+        } else {
+          this.setState({
+            fileList
+          });
+        }
+      } else {
+        this.setState({fileList: []})
+      }
+    },
+    beforeUpload: (file) => {
+      if (file && file.name.indexOf(".csv") !== -1) {
+        return true;
+      } else {
+        message.error("文件格式要求为 csv！");
+        return false;
+      }
+    }
+  };
+
+  validate = () => {
+    this.props.form.validateFields((err, values) => {
+      return !err;
+    });
+  };
+
+  submit = () => {
+    this.props.form.validateFields((err, values) => {
+      console.log("err", err);
+      console.log("UploadData", values);
+      if (!err) {
+        const data = {
+          tableName: this.props.tableName,
+          file: this.state.dataFile,
+          rowSepChar: values.rowSepChar,
+          colSepChar: values.colSepChar
+        };
+        this.props.dispatch({
+          type: 'data/uploadData',
+          payload: data,
+        });
+      }
+    });
+  };
+
+  handleCheckFile = (rule, value, callback) => {
+    if (!value || (value.fileList && this.state.fileList.length === 0)) {
+      callback("请选择文件");
+    }
+    callback();
+  };
+
+  render() {
+    const { getFieldDecorator } = this.props.form;
+    const { fileList } = this.state;
 
     return (
       <div className={styles.container}>
-        <div className={styles.hint}>
-          注意：上传的数据将追加到原表，请上传 .csv 文件
-        </div>
-        <Upload {...props} className={styles.upload}>
-          <Button type="primary" className={styles.uploadBtn}>
-            <Icon type="upload" />选择文件
-          </Button>
-        </Upload>
-        <Form onSubmit={this.handleSubmit} className={styles.form} layout="vertical">
+        <Form className={styles.form} layout="vertical">
+          <FormItem>
+            <div className={styles.hint}>
+              注意：上传的数据将追加到原表，请上传 .csv 文件
+            </div>
+            {getFieldDecorator('upload', {
+              rules: [{ required: true, message: '请选择文件', validator: this.handleCheckFile }],
+            })(
+              <Upload {...this.uploadProps} fileList={fileList} className={styles.upload}>
+                <Button type="primary" className={styles.uploadBtn}>
+                  <Icon type="upload" />选择文件
+                </Button>
+              </Upload>
+            )}
+          </FormItem>
           <Row gutter={24}>
             <Col span={12}>
               <FormItem label="行分隔符">

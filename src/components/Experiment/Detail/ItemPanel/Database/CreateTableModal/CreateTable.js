@@ -1,11 +1,25 @@
 import React from 'react';
-import {Form, Icon, Input, Select, Row, Col, Checkbox} from 'antd';
+import {Form, Icon, Input, Select, Row, Col, Checkbox, Button} from 'antd';
+import { connect } from 'dva';
 import styles from "./CreateTable.scss";
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 
 class CreateTable extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      tableName: '', // 表名
+      description: '', // 描述
+    };
+  }
+
+  componentDidMount() {
+    this.props.onRef(this);
+  }
+
   remove = (k) => {
     const {form} = this.props;
     // can use data-binding to get
@@ -33,6 +47,34 @@ class CreateTable extends React.Component {
     });
   };
 
+  validate = () => {
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        this.props.changeTableName(values.tableName);
+        return true;
+      } return false;
+    });
+  };
+
+  submit = () => {
+    console.log("submit");
+    this.props.form.validateFields((err, values) => {
+      console.log("err", err);
+      console.log("CreateTable", values);
+      if (!err) {
+        const data = {
+          tableName: values.tableName,
+          description: values.description,
+          columnList: values.columnList
+        };
+        this.props.dispatch({
+          type: 'data/createTableByColumn',
+          payload: data,
+        });
+      }
+    });
+  };
+
   render() {
     const {getFieldDecorator, getFieldValue} = this.props.form;
     getFieldDecorator('keys', {initialValue: [0]});
@@ -44,7 +86,7 @@ class CreateTable extends React.Component {
       >
         <Row gutter={24} type="flex" align="middle">
           <Col span={12}>
-            {getFieldDecorator(`names[${k}]`, {
+            {getFieldDecorator(`columnList[${k}].columnName`, {
               validateTrigger: ['onChange', 'onBlur'],
               rules: [{
                 required: true,
@@ -56,7 +98,7 @@ class CreateTable extends React.Component {
             )}
           </Col>
           <Col span={5}>
-            {getFieldDecorator(`names[${k}]`, {
+            {getFieldDecorator(`columnList[${k}].columnType`, {
               validateTrigger: ['onChange', 'onBlur'],
               initialValue: "bigint",
             })(
@@ -73,10 +115,11 @@ class CreateTable extends React.Component {
             )}
           </Col>
           <Col span={5} style={{textAlign: 'center'}}>
-            {getFieldDecorator(`names[${k}]`, {
+            {getFieldDecorator(`columnList[${k}].split`, {
               validateTrigger: ['onChange', 'onBlur'],
               rules: [{
-                message: "Please input passenger's name or delete this field.",
+                message: "是否分区字段",
+                type: 'boolean'
               }],
             })(
               <Checkbox />
@@ -97,12 +140,19 @@ class CreateTable extends React.Component {
       </FormItem>
     ));
     return (
-      <Form onSubmit={this.handleSubmit} className={styles.form} layout="vertical">
+      <Form className={styles.form} layout="vertical">
         <FormItem label="表名">
-          {getFieldDecorator('tablename', {
+          {getFieldDecorator('tableName', {
             rules: [{required: true, message: '请输入表名'}],
           })(
             <Input placeholder="请输入表名"/>,
+          )}
+        </FormItem>
+        <FormItem label="描述">
+          {getFieldDecorator('description', {
+            rules: [{required: true, message: '请输入描述'}],
+          })(
+            <Input placeholder="请输入描述"/>,
           )}
         </FormItem>
         <FormItem label="表结构" style={{width: '100%'}}>
@@ -130,4 +180,4 @@ class CreateTable extends React.Component {
 const WrappedNormalForm = Form.create()(CreateTable);
 WrappedNormalForm.propTypes = {};
 
-export default WrappedNormalForm;
+export default connect()(WrappedNormalForm);

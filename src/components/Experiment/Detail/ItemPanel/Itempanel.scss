@@ -1,8 +1,93 @@
+@import "../../../../assets/scss/mixin";
+@import "../../../../assets/scss/variables";
+@import "../../../../assets/scss/base";
+
 .container {
   height: 100%;
   width: 100%;
   background-color: #F3F3F3;
   z-index: 2;
-  //border-right: 1px solid #E6E9ED;
+  font-size: $small-font-size;
+
+  .parent {
+    padding: 0;
+
+    :global {
+      .ant-tree-switcher {
+        line-height: 40px;
+      }
+
+      .ant-tree-node-content-wrapper {
+        height: 40px;
+        line-height: 40px;
+      }
+
+      .ant-tree-node-content-wrapper::before {
+        height: 40px !important;
+      }
+
+      .ant-tree-iconEle {
+        line-height: 40px;
+      }
+
+    }
+  }
+
+  .leaf {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    line-height: 40px;
+    padding: 4px 0;
+
+    :global {
+      .ant-tree-switcher {
+        line-height: 40px;
+      }
+
+      .ant-tree-node-content-wrapper {
+        display: flex;
+        align-items: center;
+        height: 40px;
+        line-height: 40px;
+      }
+
+      .ant-tree-node-content-wrapper::before {
+        height: 40px !important;
+      }
+
+      span.ant-tree-iconEle {
+        width: 0 !important;
+        height: 0 !important;
+        display: none;
+      }
+    }
+
+  }
 }
 
+
+.item {
+  color: $gray-color-ultra-dark;
+  width: 180px;
+  height: 30px;
+  line-height: 30px;
+  padding: 4px 2px;
+  border: 1px solid rgba(0, 0, 0, 0);
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    background: $white-color;
+    border: $gray-border;
+    cursor: move;
+  }
+
+  .typeImg {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+  }
+
+}

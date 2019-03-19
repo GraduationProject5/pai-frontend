@@ -20,7 +20,7 @@
 
       &:hover {
         cursor: pointer;
-        background-color: $theme-purple-color-ultra-light;
+        background-color: #D9D1DE;
       }
     }
   }
@@ -39,4 +39,5 @@
       background-color: lighten($theme-purple-color-light, 3%);
     }
   }
+
 }

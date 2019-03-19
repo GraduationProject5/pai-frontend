@@ -7,6 +7,8 @@ import Editor from './Editor.js';
 import Canvas from './Canvas.js';
 import G6Editor from '@antv/g6-editor';
 import styles from './ModelFlow.scss';
+import databaseImgUrl from '../../../../assets/img/database.svg';
+import componentImgUrl from '../../../../assets/img/component.svg';
 
 const {Flow} = G6Editor;
 
@@ -47,7 +49,7 @@ Flow.registerNode('model-card', {
     // 类型 logo
     group.addShape('image', {
       attrs: {
-        img: this.type_icon_url,
+        img: this.typeImgUrl,
         x: x + 16,
         y: y + 12,
         width: 20,
@@ -89,7 +91,7 @@ Flow.registerNode('model-card', {
 Flow.registerNode('k-means', {
   label: 'k 均值聚类',
   color_type: '#1890FF',
-  type_icon_url: 'https://gw.alipayobjects.com/zos/rmsportal/czNEJAmyDpclFaSucYWB.svg',
+  typeImgUrl: componentImgUrl,
   state_icon_url: 'https://gw.alipayobjects.com/zos/rmsportal/MXXetJAxlqrbisIuZxDO.svg',
   // 设置锚点
   anchor: [
@@ -106,7 +108,7 @@ Flow.registerNode('k-means', {
 Flow.registerNode('random-forest', {
   label: '随机森林',
   color_type: '#9254DE',
-  type_icon_url: 'https://gw.alipayobjects.com/zos/rmsportal/czNEJAmyDpclFaSucYWB.svg',
+  typeImgUrl: componentImgUrl,
   state_icon_url: 'https://gw.alipayobjects.com/zos/rmsportal/MXXetJAxlqrbisIuZxDO.svg',
   // 设置锚点
   anchor: [
@@ -123,7 +125,7 @@ Flow.registerNode('random-forest', {
 Flow.registerNode('PS-SMART', {
   label: 'PS-SMART 分类',
   color_type: '#1890FF',
-  type_icon_url: 'https://gw.alipayobjects.com/zos/rmsportal/czNEJAmyDpclFaSucYWB.svg',
+  typeImgUrl: componentImgUrl,
   state_icon_url: 'https://gw.alipayobjects.com/zos/rmsportal/MXXetJAxlqrbisIuZxDO.svg',
   // 设置锚点
   anchor: [
@@ -143,7 +145,7 @@ Flow.registerNode('PS-SMART', {
 Flow.registerNode('Bayes', {
   label: '朴素贝叶斯',
   color_type: '#9254DE',
-  type_icon_url: 'https://gw.alipayobjects.com/zos/rmsportal/czNEJAmyDpclFaSucYWB.svg',
+  typeImgUrl: componentImgUrl,
   state_icon_url: 'https://gw.alipayobjects.com/zos/rmsportal/uZVdwjJGqDooqKLKtvGA.svg',
   // 设置锚点
   anchor: [
@@ -157,10 +159,10 @@ Flow.registerNode('Bayes', {
 }, 'model-card');
 
 // 读数据表
-Flow.registerNode('read-data-base', {
+Flow.registerNode('read-data-table', {
   label: '读数据表',
   color_type: '#FAAD14',
-  type_icon_url: 'https://gw.alipayobjects.com/zos/rmsportal/czNEJAmyDpclFaSucYWB.svg',
+  typeImgUrl: databaseImgUrl,
   state_icon_url: 'https://gw.alipayobjects.com/zos/rmsportal/MXXetJAxlqrbisIuZxDO.svg',
   // 设置锚点
   anchor: [
@@ -175,6 +177,13 @@ export default class BaseFlowEditor extends Editor {
     super.componentDidMount();
     const editor = this.editor;
     const page = editor.getCurrentPage();
+
+    // 设置节点的文字标签
+    page.getGraph().node({
+      label(model) {
+        return model.name;
+      }
+    });
 
     // 输入锚点不可以连出边
     page.on('hoveranchor:beforeaddedge', ev => {

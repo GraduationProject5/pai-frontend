@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, Button, Icon } from 'antd';
+import { Menu, Button } from 'antd';
 import { Link } from 'dva/router';
 import { connect } from 'dva';
 import SearchBar from './SearchBar';
@@ -37,8 +37,8 @@ class Header extends React.Component {
   };
 
   render() {
-    const { location, userInfo } = this.props;
-    console.log('Header, userInfo:', userInfo);
+    const { location, user } = this.props;
+    console.log('Header, user:', user);
     return (
       <div className={styles.header}>
         <Menu
@@ -67,22 +67,17 @@ class Header extends React.Component {
             className={styles.menu}
           >
             {
-              userInfo ?
+              user ?
                 <SubMenu
                   key="avatar"
                   title={<a>
-                    <img alt="avatar" src={userInfo.avatar ? `/api/${userInfo.avatar}` : defaultAvatar} className={styles.avatar} />
+                    <img alt="avatar" src={defaultAvatar} className={styles.avatar} />
                   </a>}
                   className={styles.submenu}
                 >
                   <MenuItemGroup>
-                    <MenuItem key="profile">
-                      <Link to={`/user/${userInfo.userId}`}>
-                        My profile
-                      </Link>
-                    </MenuItem>
                     <MenuItem key="logout">
-                      <a onClick={this.handleLogout}>Logout</a>
+                      <a onClick={this.handleLogout}>注销</a>
                     </MenuItem>
                   </MenuItemGroup>
                 </SubMenu>
@@ -90,10 +85,8 @@ class Header extends React.Component {
             }
           </Menu>
           {
-            userInfo ?
-              <Button type="primary" className={styles.upload_button} onClick={() => this.setUploadModalVisible(true)}>
-                <Icon type="cloud-upload-o" style={{ fontSize: 18 }} />Upload
-              </Button>
+            user ?
+              null
               :
               <div className={styles.action_button}>
                 <Button className={styles.login_button} onClick={() => this.setLoginModalVisible(true, 'login')}>
@@ -118,8 +111,8 @@ class Header extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const { userInfo, loginModalVisible } = state.user;
-  return { userInfo, loginModalVisible };
+  const { user, loginModalVisible } = state.user;
+  return { user, loginModalVisible };
 }
 
 export default connect(mapStateToProps)(Header);

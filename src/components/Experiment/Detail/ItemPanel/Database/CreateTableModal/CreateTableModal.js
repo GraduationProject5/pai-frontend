@@ -1,19 +1,12 @@
 import React from 'react';
 import PropTypes from "prop-types";
 import {Modal, Steps, Button, message} from 'antd';
+import { connect } from 'dva';
 import styles from './CreateTableModal.scss';
 import CreateTable from './CreateTable';
 import UploadData from './UploadData';
 
 const Step = Steps.Step;
-
-const steps = [{
-  title: '创建表',
-  content: <CreateTable />,
-}, {
-  title: '上传数据',
-  content: <UploadData />,
-}];
 
 class CreateTableModal extends React.Component {
 
@@ -21,22 +14,66 @@ class CreateTableModal extends React.Component {
     super(props);
     this.state = {
       current: 0, // 处理步骤阶段
+      tableName: '', // 表名
     };
   }
 
-  next() {
+  next = () => {
     const current = this.state.current + 1;
     this.setState({ current });
-  }
+    // if (this.createTableRef.validate()) {
+    //   const current = this.state.current + 1;
+    //   this.setState({ current });
+    // }
+  };
 
-  prev() {
+  prev = () => {
     const current = this.state.current - 1;
     this.setState({ current });
-  }
+  };
+
+  submit = () => {
+    // TODO 异步处理
+    if (this.uploadDataRef.validate()) {
+      // 创建表
+      this.createTableRef.submit();
+      // 上传数据
+      this.uploadDataRef.submit();
+    }
+  };
+
+  cancel = () => {
+    this.props.setModalVisible(false);
+  };
+
+  onCreateTableRef = (ref) => {
+    this.createTableRef = ref;
+  };
+
+  onUploadDataRef = (ref) => {
+    this.uploadDataRef = ref;
+  };
+
+  /**
+   * 用于 CreateTable 与 UploadData 之间的通信，通信 tableName
+   * 如果不是同个父组件可以采用发布订阅模式
+   * @param tableName
+   */
+  changeTableName = (tableName) => {
+    this.setState({tableName})
+  };
 
   render() {
     const {visible, setModalVisible} = this.props;
-    const { current } = this.state;
+    const { current, tableName } = this.state;
+
+    const steps = [{
+      title: '创建表',
+      content: <CreateTable onRef={this.onCreateTableRef} changeTableName={this.changeTableName}/>,
+    }, {
+      title: '上传数据',
+      content: <UploadData onRef={this.onUploadDataRef} tableName={tableName}/>,
+    }];
 
     return (
       <Modal
@@ -59,7 +96,7 @@ class CreateTableModal extends React.Component {
             }
             {
               current === steps.length - 1
-              && <Button type="primary" onClick={() => message.success('Processing complete!')}>Done</Button>
+              && <Button type="primary" onClick={() => this.submit()}>提交</Button>
             }
             {
               current > 0
@@ -69,7 +106,7 @@ class CreateTableModal extends React.Component {
                 </Button>
               )
             }
-            <Button onClick={() => setModalVisible(false)}>关闭</Button>
+            <Button onClick={() => this.cancel()}>关闭</Button>
           </div>
         </div>
       </Modal>
@@ -82,4 +119,4 @@ CreateTableModal.propTypes = {
   setModalVisible: PropTypes.func.isRequired,
 };
 
-export default CreateTableModal;
+export default connect()(CreateTableModal);

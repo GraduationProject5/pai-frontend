@@ -18,7 +18,7 @@ export function create(data) {
 }
 
 /**
- * 查看实验
+ * 获得所有实验
  * @param data
  * @returns {*}
  */
@@ -30,4 +30,12 @@ export function allExperiment(data) {
     },
     body: JSON.stringify(data),
   });
+}
+
+/**
+ * 获取实验详情
+ * @param data
+ */
+export function getExperimentDetail(data) {
+
 }

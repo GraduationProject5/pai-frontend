@@ -1,5 +1,7 @@
 import React from 'react';
 import {Modal, Button} from 'antd';
+import styles from './ResultModal.scss';
+import ResultTable from './ResultTable';
 
 class ResultModal extends React.Component {
 
@@ -22,12 +24,13 @@ class ResultModal extends React.Component {
       <Modal
         title="查看数据"
         visible={visible}
+        centered
         onOk={this.handleOk}
         onCancel={this.handleCancel}
+        width={1100}
+        className={styles.container}
       >
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+        <ResultTable />
       </Modal>
     );
   }

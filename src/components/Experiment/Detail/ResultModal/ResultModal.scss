@@ -1,3 +1,20 @@
 @import "../../../../assets/scss/mixin";
 @import "../../../../assets/scss/variables";
 @import "../../../../assets/scss/base";
+
+.container {
+  height: 600px;
+
+  :global {
+    .ant-modal-content {
+      height: 100%;
+    }
+
+    .ant-modal-footer {
+      width: 100%;
+      position: absolute;
+      right: 0;
+      bottom: 0;
+    }
+  }
+}

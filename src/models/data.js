@@ -5,7 +5,7 @@ export default {
   namespace: 'data',
 
   state: {
-    columnList: [] // 用户表列属性
+    dataTables: []
   },
 
   subscriptions: {
@@ -42,9 +42,6 @@ export default {
   reducers: {
     save(state, action) {
       return { ...state, ...action.payload };
-    },
-    saveColumnList(state, {payload: {columnList}}) {
-      return { ...state, columnList };
     },
   },
 

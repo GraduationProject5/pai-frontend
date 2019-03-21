@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from "prop-types";
 import {Form, Modal, Input} from 'antd';
+import { connect } from 'dva';
 import styles from './CreateExperimentModal.scss';
 
 const FormItem = Form.Item;
@@ -8,9 +9,30 @@ const FormItem = Form.Item;
 class CreateExperimentModal extends React.Component {
 
 
+  handleSubmit = () => {
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        const data = {
+          name: values.name,
+          description: values.desc
+        };
+        this.props.dispatch({
+          type: 'experiment/create',
+          payload: data,
+        });
+      }
+    });
+  };
+
+  cancel = () => {
+    // 清空表单数据
+    this.props.form.resetFields();
+    this.props.setModalVisible(false);
+  };
+
   render() {
     const {getFieldDecorator} = this.props.form;
-    const {visible, setModalVisible} = this.props;
+    const {visible, } = this.props;
 
     return (
       <Modal
@@ -19,10 +41,11 @@ class CreateExperimentModal extends React.Component {
         width={600}
         wrapClassName={styles.modal}
         okText="创建"
-        onOk={null}
-        onCancel={() => setModalVisible(false)}
+        cancelText="取消"
+        onOk={this.handleSubmit}
+        onCancel={this.cancel}
       >
-        <Form onSubmit={this.handleSubmit}>
+        <Form>
           <FormItem label="名称">
             {getFieldDecorator('name', {
               rules: [{required: true, message: '请输入实验名称'}],
@@ -43,10 +66,10 @@ class CreateExperimentModal extends React.Component {
   }
 }
 
-const WrappedNormalForm = Form.create()(CreateExperimentModal);
-WrappedNormalForm.propTypes = {
+const WrappedForm = Form.create()(CreateExperimentModal);
+WrappedForm.propTypes = {
   visible: PropTypes.bool.isRequired,
   setModalVisible: PropTypes.func.isRequired,
 };
 
-export default WrappedNormalForm;
+export default connect()(WrappedForm);

@@ -1,5 +1,6 @@
 import React from 'react';
 import {Icon} from 'antd';
+import { connect } from 'dva';
 import styles from '../Itempanel.scss'
 import stylesDatabase from './Database.scss';
 import CreateTableModal from './CreateTableModal/CreateTableModal';
@@ -55,6 +56,12 @@ class Database extends React.Component {
   }
 }
 
+
+function mapStateToProps(state) {
+  const { dataTables } = state.data;
+  return { dataTables };
+}
+
 Database.propTypes = {};
 
-export default Database;
+export default connect(mapStateToProps)(Database);

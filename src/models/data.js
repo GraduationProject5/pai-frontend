@@ -1,4 +1,5 @@
 import * as DataService from "../services/DataService";
+import * as DataMock from '../Mock/DataMock';
 
 export default {
 
@@ -30,8 +31,14 @@ export default {
       console.log('uploadData', response);
     },
     *getAllTable({ payload: data }, { call, put }) {  // eslint-disable-line
-      const response = yield call(DataService.allTable, data);
-      console.log('getAllTable', response);
+      // const response = yield call(DataService.allTable, data);
+      // console.log('getAllTable', response);
+      yield put({
+        type: 'saveDataTables',
+        payload: {
+          dataTables: DataMock.dataTables
+        }
+      });
     },
     *getTableDetail({ payload: data }, { call, put }) {  // eslint-disable-line
       const response = yield call(DataService.tableDetail, data);
@@ -42,6 +49,9 @@ export default {
   reducers: {
     save(state, action) {
       return { ...state, ...action.payload };
+    },
+    saveDataTables(state, {payload: {dataTables}}) {
+      return {...state, dataTables}
     },
   },
 

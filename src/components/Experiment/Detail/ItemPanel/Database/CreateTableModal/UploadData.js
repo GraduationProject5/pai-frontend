@@ -24,7 +24,7 @@ class UploadData extends React.Component {
     headers: {
       authorization: 'authorization-text',
     },
-    onChange: ({ file, fileList }) => {
+    onChange: ({file, fileList}) => {
       if (file && file.name.indexOf(".csv") !== -1) {
         if (file.status === 'done') {
           console.log("onChange", file);
@@ -54,10 +54,16 @@ class UploadData extends React.Component {
     }
   };
 
+  clear = () => {
+    this.props.form.resetFields();
+  };
+
   validate = () => {
+    let isValidated = false;
     this.props.form.validateFields((err, values) => {
-      return !err;
+      isValidated = !err;
     });
+    return isValidated;
   };
 
   submit = () => {
@@ -87,48 +93,46 @@ class UploadData extends React.Component {
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
-    const { fileList } = this.state;
+    const {getFieldDecorator} = this.props.form;
+    const {fileList} = this.state;
 
     return (
-      <div className={styles.container}>
-        <Form className={styles.form} layout="vertical">
-          <FormItem>
-            <div className={styles.hint}>
-              注意：上传的数据将追加到原表，请上传 .csv 文件
-            </div>
-            {getFieldDecorator('upload', {
-              rules: [{ required: true, message: '请选择文件', validator: this.handleCheckFile }],
-            })(
-              <Upload {...this.uploadProps} fileList={fileList} className={styles.upload}>
-                <Button type="primary" className={styles.uploadBtn}>
-                  <Icon type="upload" />选择文件
-                </Button>
-              </Upload>
-            )}
-          </FormItem>
-          <Row gutter={24}>
-            <Col span={12}>
-              <FormItem label="行分隔符">
-                {getFieldDecorator('rowSepChar', {
-                  rules: [{required: true, message: '请输入行分隔符'}],
-                })(
-                  <Input placeholder="请输入行分隔符"/>,
-                )}
-              </FormItem>
-            </Col>
-            <Col span={12}>
-              <FormItem label="列分隔符">
-                {getFieldDecorator('colSepChar', {
-                  rules: [{required: true, message: '请输入列分隔符'}],
-                })(
-                  <Input placeholder="请输入列分隔符"/>,
-                )}
-              </FormItem>
-            </Col>
-          </Row>
-        </Form>
-      </div>
+      <Form className={styles.container} layout="vertical" style={this.props.style}>
+        <FormItem>
+          <div className={styles.hint}>
+            注意：上传的数据将追加到原表，请上传 .csv 文件
+          </div>
+          {getFieldDecorator('upload', {
+            rules: [{required: true, message: '请选择文件', validator: this.handleCheckFile}],
+          })(
+            <Upload {...this.uploadProps} fileList={fileList} className={styles.upload}>
+              <Button type="primary" className={styles.uploadBtn}>
+                <Icon type="upload"/>选择文件
+              </Button>
+            </Upload>
+          )}
+        </FormItem>
+        <Row gutter={24}>
+          <Col span={12}>
+            <FormItem label="行分隔符">
+              {getFieldDecorator('rowSepChar', {
+                rules: [{required: true, message: '请输入行分隔符'}],
+              })(
+                <Input placeholder="请输入行分隔符"/>,
+              )}
+            </FormItem>
+          </Col>
+          <Col span={12}>
+            <FormItem label="列分隔符">
+              {getFieldDecorator('colSepChar', {
+                rules: [{required: true, message: '请输入列分隔符'}],
+              })(
+                <Input placeholder="请输入列分隔符"/>,
+              )}
+            </FormItem>
+          </Col>
+        </Row>
+      </Form>
     );
   }
 }

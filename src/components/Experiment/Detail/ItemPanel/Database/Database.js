@@ -1,6 +1,6 @@
 import React from 'react';
 import {Icon} from 'antd';
-import { connect } from 'dva';
+import {connect} from 'dva';
 import styles from '../Itempanel.scss'
 import stylesDatabase from './Database.scss';
 import CreateTableModal from './CreateTableModal/CreateTableModal';
@@ -15,33 +15,30 @@ class Database extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.props.dispatch({
+      type: 'data/getAllTable'
+    });
+  }
+
   setCreateTableModalVisible = (visible) => {
     this.setState({modalVisible: visible});
   };
 
-  tableListMock = [
-    <span className={`${styles.item} getItem`} data-name="读数据表1" data-shape="read-data-table" data-type="node" data-size="170*34">
-      <img src={databaseImgUrl} className={styles.typeImg}/>读数据表1
-    </span>,
-    <span className={`${styles.item} getItem`} data-name="读数据表2" data-shape="read-data-table" data-type="node" data-size="170*34">
-      <img src={databaseImgUrl} className={styles.typeImg}/>读数据表2
-    </span>,
-    <span className={`${styles.item} getItem`} data-name="读数据表3" data-shape="read-data-table" data-type="node" data-size="170*34">
-      <img src={databaseImgUrl} className={styles.typeImg}/>读数据表3
-    </span>
-  ];
-
   render() {
     const modalVisible = this.state.modalVisible;
-
+    const {dataTables} = this.props;
     return (
       <div className={stylesDatabase.container}>
         <div className={stylesDatabase.tableList}>
           {
-            this.tableListMock.map((table, index) => {
+            dataTables.map((table) => {
               return (
-                <div className={stylesDatabase.tableItem} key={index}>
-                  {table}
+                <div className={stylesDatabase.tableItem} key={table.id}>
+                  <span className={`${styles.item} getItem`} data-name={`${table.name}`} data-shape="read-data-table"
+                        data-type="node" data-size="170*34">
+                    <img src={databaseImgUrl} className={styles.typeImg}/>{table.name}
+                  </span>
                 </div>
               );
             })
@@ -58,8 +55,8 @@ class Database extends React.Component {
 
 
 function mapStateToProps(state) {
-  const { dataTables } = state.data;
-  return { dataTables };
+  const {dataTables} = state.data;
+  return {dataTables};
 }
 
 Database.propTypes = {};

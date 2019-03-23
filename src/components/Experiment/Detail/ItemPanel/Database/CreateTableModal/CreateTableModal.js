@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from "prop-types";
 import {Modal, Steps, Button, message} from 'antd';
-import { connect } from 'dva';
+import {connect} from 'dva';
 import styles from './CreateTableModal.scss';
 import CreateTable from './CreateTable';
 import UploadData from './UploadData';
@@ -19,17 +19,15 @@ class CreateTableModal extends React.Component {
   }
 
   next = () => {
-    const current = this.state.current + 1;
-    this.setState({ current });
-    // if (this.createTableRef.validate()) {
-    //   const current = this.state.current + 1;
-    //   this.setState({ current });
-    // }
+    if (this.createTableRef.validate()) {
+      const current = this.state.current + 1;
+      this.setState({current});
+    }
   };
 
   prev = () => {
     const current = this.state.current - 1;
-    this.setState({ current });
+    this.setState({current});
   };
 
   submit = () => {
@@ -43,7 +41,12 @@ class CreateTableModal extends React.Component {
   };
 
   cancel = () => {
+    this.createTableRef.clear();
+    if (this.uploadDataRef) {
+      this.uploadDataRef.clear();
+    }
     this.props.setModalVisible(false);
+    this.setState({current: 0});
   };
 
   onCreateTableRef = (ref) => {
@@ -65,15 +68,8 @@ class CreateTableModal extends React.Component {
 
   render() {
     const {visible, setModalVisible} = this.props;
-    const { current, tableName } = this.state;
-
-    const steps = [{
-      title: '创建表',
-      content: <CreateTable onRef={this.onCreateTableRef} changeTableName={this.changeTableName}/>,
-    }, {
-      title: '上传数据',
-      content: <UploadData onRef={this.onUploadDataRef} tableName={tableName}/>,
-    }];
+    const {current, tableName} = this.state;
+    let isCreateTable = current === 0;
 
     return (
       <Modal
@@ -86,27 +82,28 @@ class CreateTableModal extends React.Component {
       >
         <div className={styles.container}>
           <Steps current={current}>
-            {steps.map(item => <Step key={item.title} title={item.title} />)}
+            <Step key='创建表' title='创建表'/>
+            <Step key='上传数据' title='上传数据'/>
           </Steps>
-          <div className={styles.content}>{steps[current].content}</div>
+          <div className={styles.content}>
+            <CreateTable style={{display: isCreateTable ? 'block' : 'none'}} onRef={this.onCreateTableRef}
+                         changeTableName={this.changeTableName}/>
+            <UploadData style={{display: isCreateTable ? 'none' : 'block'}} onRef={this.onUploadDataRef}
+                        tableName={tableName}/>
+          </div>
           <div className={styles.action}>
             {
-              current < steps.length - 1
-              && <Button type="primary" onClick={() => this.next()}>下一步</Button>
+              isCreateTable ?
+                <Button type="primary" onClick={() => this.next()}>下一步</Button>
+                :
+                <React.Fragment>
+                  <Button type="primary" onClick={() => this.submit()}>提交</Button>
+                  <Button style={{marginLeft: 8}} onClick={() => this.prev()}>
+                    上一步
+                  </Button>
+                </React.Fragment>
             }
-            {
-              current === steps.length - 1
-              && <Button type="primary" onClick={() => this.submit()}>提交</Button>
-            }
-            {
-              current > 0
-              && (
-                <Button style={{ marginLeft: 8 }} onClick={() => this.prev()}>
-                  上一步
-                </Button>
-              )
-            }
-            <Button onClick={() => this.cancel()}>关闭</Button>
+            <Button onClick={() => this.cancel()} style={{marginLeft: 8}}>关闭</Button>
           </div>
         </div>
       </Modal>

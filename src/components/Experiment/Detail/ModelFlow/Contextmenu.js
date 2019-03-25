@@ -1,6 +1,7 @@
 import React from 'react';
 import G6Editor from '@antv/g6-editor';
 import PropTypes from 'prop-types';
+import {connect} from 'dva';
 import styles from './Contextmenu.scss';
 import ResultModal from '../ResultModal/ResultModal';
 
@@ -25,7 +26,17 @@ class Contextmenu extends React.Component {
     editor.add(contextmenu);
   }
 
-  showResultModal = (visible) => {
+  // 获取对应组件结果
+  getResult = (nodeid) => {
+    this.props.dispatch({
+      type: 'component/getResult',
+      payload: {
+        nodeId: +nodeid,
+      }
+    });
+  };
+
+  showResultModal = (visible, nodeid) => {
     this.setState({modalVisible: visible})
   };
 
@@ -50,8 +61,11 @@ class Contextmenu extends React.Component {
             <span>{selectedModel.name}</span>
           </div>
           <div className={`${styles.command}`}>
-            <span onClick={() => this.showResultModal(true)}>查看数据</span>
-            <ResultModal visible={modalVisible} setModalVisible={this.showResultModal}/>
+            <span onClick={() => {
+              this.showResultModal(true);
+              this.getResult(selectedModel.nodeid);
+            }}>查看数据</span>
+            <ResultModal visible={modalVisible} setModalVisible={this.showResultModal} node={selectedModel} />
           </div>
         </div>
         <div data-status="edge-selected" className="menu">
@@ -114,4 +128,4 @@ Contextmenu.propTypes = {
   editor: PropTypes.object,
   selectedModel: PropTypes.object
 };
-export default Contextmenu;
+export default connect()(Contextmenu);

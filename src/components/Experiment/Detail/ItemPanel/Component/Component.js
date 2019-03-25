@@ -45,6 +45,7 @@ class Component extends React.Component {
     if (component.isChild) {
       const item = (
         <span className={`${styles.item} getItem`} data-name={component.name} data-shape={component.type}
+              data-nodeid={component.id}
               data-type="node"
               data-size="170*34">
                     <img src={componentImgUrl} className={styles.typeImg}/>{component.name}

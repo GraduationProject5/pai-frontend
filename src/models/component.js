@@ -1,12 +1,13 @@
 import * as ComponentService from "../services/ComponentService";
 import * as ComponentMock from '../Mock/ComponentMock';
+import * as ArrayUtil from '../utils/arrayUtil';
 
 export default {
 
   namespace: 'component',
 
   state: {
-    components: [],     // 组件列表
+    result: {},         // 实验结果
   },
 
   subscriptions: {
@@ -18,13 +19,14 @@ export default {
     * fetch({payload}, {call, put}) {  // eslint-disable-line
       yield put({type: 'save'});
     },
-    * getComponents({payload: data}, {call, put}) {  // eslint-disable-line
-      // const response = yield call(ExperimentService.allExperiment, data);
-      console.log('getComponents',  ComponentMock.components);
+    * getResult({payload: data}, {call, put, select}) {  // eslint-disable-line
+      const experiment = yield select(state => state.experiment);
+      const experimentId = experiment.experimentDetail.id;
+      const result = ArrayUtil.find(ComponentMock.result.results, 'id', data.nodeId);
       yield put({
-        type: 'saveComponents',
+        type: 'saveResult',
         payload: {
-          components: ComponentMock.components
+          result: result
         }
       });
     },
@@ -34,8 +36,8 @@ export default {
     save(state, action) {
       return {...state, ...action.payload};
     },
-    saveComponents(state, {payload: {components}}) {
-      return {...state, components}
+    saveResult(state, {payload: {result}}) {
+      return {...state, result}
     },
   },
 

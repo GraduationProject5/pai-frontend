@@ -1,4 +1,3 @@
-import {message} from 'antd';
 import * as UserService from '../services/UserService';
 
 export default {
@@ -6,7 +5,7 @@ export default {
   namespace: 'user',
 
   state: {
-    userInfo: '',
+    user: '',
     loginModalVisible: false,
   },
 

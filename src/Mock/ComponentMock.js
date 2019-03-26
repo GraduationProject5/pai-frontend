@@ -1,5 +1,3 @@
-import React from "react";
-
 export const components = [
   {
     id: 1,

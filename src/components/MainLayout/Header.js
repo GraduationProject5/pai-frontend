@@ -48,7 +48,7 @@ class Header extends React.Component {
         >
           <MenuItem key="/">
             <Link to="/">
-              HOME
+              首页
             </Link>
           </MenuItem>
           <MenuItem key="/experiment">

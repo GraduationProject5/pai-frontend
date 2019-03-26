@@ -37,7 +37,7 @@ class Database extends React.Component {
                 <div className={stylesDatabase.tableItem} key={table.id}>
                   <span className={`${styles.item} getItem`} data-name={`${table.name}`} data-shape="read-data-table"
                         data-type="node" data-size="170*34">
-                    <img src={databaseImgUrl} className={styles.typeImg}/>{table.name}
+                    <img alt="type" src={databaseImgUrl} className={styles.typeImg}/>{table.name}
                   </span>
                 </div>
               );

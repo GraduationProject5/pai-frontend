@@ -1,4 +1,3 @@
-import * as ComponentService from "../services/ComponentService";
 import * as ComponentMock from '../Mock/ComponentMock';
 import * as ArrayUtil from '../utils/arrayUtil';
 
@@ -20,8 +19,8 @@ export default {
       yield put({type: 'save'});
     },
     * getResult({payload: data}, {call, put, select}) {  // eslint-disable-line
-      const experiment = yield select(state => state.experiment);
-      const experimentId = experiment.experimentDetail.id;
+      // const experiment = yield select(state => state.experiment);
+      // const experimentId = experiment.experimentDetail.id;
       const result = ArrayUtil.find(ComponentMock.result.results, 'id', data.nodeId);
       yield put({
         type: 'saveResult',

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Tree, Icon} from 'antd';
+import {Icon} from 'antd';
 import {connect} from 'dva';
 import stylesExperiment from './Experiment.scss';
 import CreateExperimentModal from "./CreateExperimentModal/CreateExperimentModal";
@@ -47,7 +47,7 @@ class Experiment extends React.Component {
                 <div className={stylesExperiment.item} key={experiment.id}
                      tabIndex={experiment.id}
                       onClick={() => this.getExperimentDetail(experiment.id)}>
-                  <img src={experimentImgUrl} className={stylesExperiment.typeImg}/>{experiment.name}
+                  <img alt="type" src={experimentImgUrl} className={stylesExperiment.typeImg}/>{experiment.name}
                 </div>
               );
             })

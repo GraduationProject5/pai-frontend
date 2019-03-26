@@ -1,14 +1,10 @@
 import React from 'react';
-import {Modal, Button} from 'antd';
+import {Modal} from 'antd';
 import {connect} from 'dva';
 import styles from './ResultModal.scss';
 import ResultTable from './ResultTable';
 
 class ResultModal extends React.Component {
-
-  constructor(props) {
-    super(props);
-  }
 
   handleOk = (e) => {
     this.props.setModalVisible(false);

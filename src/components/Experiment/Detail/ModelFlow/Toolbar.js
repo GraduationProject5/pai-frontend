@@ -17,6 +17,12 @@ class Toolbar extends React.Component {
     editor.add(toolbar);
   }
 
+  save = () => {
+    console.log("保存项目");
+    const data = this.props.editor.getCurrentPage().save();
+    console.log(data);
+  };
+
   run = () => {
     console.log("运行项目");
     const data = this.props.editor.getCurrentPage().save();
@@ -28,6 +34,7 @@ class Toolbar extends React.Component {
       <div className={styles.container} ref={el => {
         this.toolbarContainer = el;
       }}>
+        <Icon type="save" className={styles.command} title="保存" onClick={this.save}/>
         <Icon type="caret-right" className={styles.command} title="运行" onClick={this.run}/>
         <span className={styles.separator}/>
         <Icon type="undo" data-command="undo" className={`${styles.command} command`} title="撤销"/>

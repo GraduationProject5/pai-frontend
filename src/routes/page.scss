@@ -2,12 +2,6 @@
 @import "../assets/scss/variables";
 @import "../assets/scss/base";
 
-.picture_card_list {
-  display: flex;
-  justify-content: center;
-  padding-top: 50px;
-}
-
 .index {
   width: 100%;
   height: 100%;
@@ -18,9 +12,23 @@
 
   .welcome {
     font-size: 48px;
-    color: $gray-color-ultra-dark;
+    color: $gray-color-light;
     position: absolute;
     top: 200px;
     left: 50px;
+  }
+
+  .form_button {
+    position: absolute;
+    top: 300px;
+    left: 50px;
+    background-image: linear-gradient(to right bottom, rgba(159, 88, 150, 0) 0, rgba(159, 88, 150, 0.6) 100%);
+    font-weight: 400;
+    border-radius: 0;
+    border: none;
+    font-size: 18px;
+    width: 128px;
+    height: 45px;
+    line-height: 45px;
   }
 }

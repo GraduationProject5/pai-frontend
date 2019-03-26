@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from "prop-types";
-import {Modal, Steps, Button, message} from 'antd';
+import {Modal, Steps, Button} from 'antd';
 import {connect} from 'dva';
 import styles from './CreateTableModal.scss';
 import CreateTable from './CreateTable';

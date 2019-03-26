@@ -15,7 +15,6 @@ class CreateTable extends React.Component {
     this.state = {
       tableName: '',    // 表名
       description: '',  // 描述
-      script: '',       // 命令行脚本
       mode: 'field',    // 建表方式，默认为可视化建表，命令行建表为 field
     };
   }
@@ -111,15 +110,8 @@ class CreateTable extends React.Component {
     })
   };
 
-  handleTextAreaChange = (e) => {
-    this.setState({
-      script: e.target.value
-    })
-  };
-
   render() {
     const {getFieldDecorator, getFieldValue} = this.props.form;
-    const {script} = this.state.script;
 
     getFieldDecorator('tableFieldKeys', {initialValue: []});
     const tableFieldKeys = getFieldValue('tableFieldKeys');

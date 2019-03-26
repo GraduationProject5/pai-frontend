@@ -43,30 +43,10 @@ export default class BaseFlowEditor extends Editor {
   }
 
   render() {
-    const {curZoom, minZoom, maxZoom, selectedModel, inputingLabel} = this.state;
+    const {curZoom, minZoom, maxZoom, selectedModel} = this.state;
     console.log(selectedModel);
     const mode = this.props.mode;
-    // const labelInput = (
-    //   <div className={styles.p}>
-    //     名称：
-    //     <Input
-    //       size="small"
-    //       className={`${styles.input} ${styles["name-input"]}`}
-    //       value={inputingLabel ? inputingLabel : selectedModel.label}
-    //       onChange={ev => {
-    //         this.setState({
-    //           inputingLabel: ev.target.value
-    //         });
-    //       }}
-    //       onBlur={ev => {
-    //         this.updateGraph('label', ev.target.value);
-    //         this.setState({
-    //           inputingLabel: null
-    //         });
-    //       }}
-    //     />
-    //   </div>
-    // );
+
     return (
       <div className={styles.editor}>
         <Contextmenu editor={this.editor} selectedModel={selectedModel}/>

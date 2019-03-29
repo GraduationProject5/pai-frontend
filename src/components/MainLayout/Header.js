@@ -2,7 +2,6 @@ import React from 'react';
 import { Menu, Button } from 'antd';
 import { Link } from 'dva/router';
 import { connect } from 'dva';
-import SearchBar from './SearchBar';
 import styles from './Header.scss';
 import defaultAvatar from '../../assets/img/default-avatar.png';
 import LoginModal from '../../components/LoginModal/LoginModal';
@@ -37,8 +36,8 @@ class Header extends React.Component {
   };
 
   render() {
-    const { location, user } = this.props;
-    console.log('Header, user:', user);
+    const { location, userInfo } = this.props;
+    console.log('Header, userInfo:', userInfo);
     return (
       <div className={styles.header}>
         <Menu
@@ -58,16 +57,12 @@ class Header extends React.Component {
           </MenuItem>
         </Menu>
         <div className={styles.right}>
-          <div className={styles.search_bar}>
-            <SearchBar />
-          </div>
           <Menu
-            selectedKeys={[location.pathname]}
             mode="horizontal"
             className={styles.menu}
           >
             {
-              user ?
+              userInfo ?
                 <SubMenu
                   key="avatar"
                   title={<a>
@@ -75,17 +70,15 @@ class Header extends React.Component {
                   </a>}
                   className={styles.submenu}
                 >
-                  <MenuItemGroup>
-                    <MenuItem key="logout">
-                      <a onClick={this.handleLogout}>注销</a>
-                    </MenuItem>
-                  </MenuItemGroup>
+                  <MenuItem key="logout">
+                    <div onClick={this.handleLogout}>注销</div>
+                  </MenuItem>
                 </SubMenu>
                 : null
             }
           </Menu>
           {
-            user ?
+            userInfo ?
               null
               :
               <div className={styles.action_button}>
@@ -111,8 +104,8 @@ class Header extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const { user, loginModalVisible } = state.user;
-  return { user, loginModalVisible };
+  const { userInfo, loginModalVisible } = state.user;
+  return { userInfo, loginModalVisible };
 }
 
 export default connect(mapStateToProps)(Header);

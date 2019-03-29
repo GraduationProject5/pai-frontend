@@ -22,6 +22,7 @@ class CreateTableModal extends React.Component {
     if (this.createTableRef.validate()) {
       const current = this.state.current + 1;
       this.setState({current});
+      this.createTableRef.submit();
     }
   };
 

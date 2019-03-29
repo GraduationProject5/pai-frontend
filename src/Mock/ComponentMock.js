@@ -16,7 +16,12 @@ export const components = [
             type: 'output'
           }]
         ],
-        isChild: true
+        isChild: true,
+        paras: {
+          'a': 1,
+          'b': 2,
+          'c': 3
+        }
       },
       {
         id: 3,
@@ -33,7 +38,12 @@ export const components = [
             type: 'output'
           }]
         ],
-        isChild: true
+        isChild: true,
+        paras: {
+          'a': 1,
+          'b': 2,
+          'c': 3
+        }
       },
     ]
   },
@@ -54,7 +64,12 @@ export const components = [
             type: 'output'
           }]
         ],
-        isChild: true
+        isChild: true,
+        paras: {
+          'a': 1,
+          'b': 2,
+          'c': 3
+        }
       },
       {
         id: 6,
@@ -68,7 +83,12 @@ export const components = [
             type: 'output'
           }] // 下边边的中点
         ],
-        isChild: true
+        isChild: true,
+        paras: {
+          'a': 1,
+          'b': 2,
+          'c': 3
+        }
       },
       {
         id: 7,

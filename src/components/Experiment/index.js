@@ -21,7 +21,7 @@ class Index extends React.Component {
     }
   }
 
-  changeContent(type, isDetail) {
+  changeContent = (type, isDetail) => {
     if (isDetail) {
       this.setState({
         isDetail: true,
@@ -34,7 +34,7 @@ class Index extends React.Component {
         content: this.module[type]
       })
     }
-  }
+  };
 
   render() {
     const { content, isDetail, detailMode } = this.state;
@@ -47,27 +47,27 @@ class Index extends React.Component {
           theme="dark"
           inlineCollapsed={true}
         >
-          <Menu.Item key="home" onClick={this.changeContent.bind(this, 'home', false)}>
+          <Menu.Item key="home" onClick={() => this.changeContent('home', false)}>
             <Icon type="home"/>
             <span>首页</span>
           </Menu.Item>
-          <Menu.Item key="experiment" onClick={this.changeContent.bind(this, 'experiment', true)}>
+          <Menu.Item key="experiment" onClick={() => this.changeContent('experiment', true)}>
             <Icon type="experiment"/>
             <span>实验</span>
           </Menu.Item>
-          <Menu.Item key="database" onClick={this.changeContent.bind(this, 'database', true)}>
+          <Menu.Item key="database" onClick={() => this.changeContent('database', true)}>
             <Icon type="database"/>
             <span>数据源</span>
           </Menu.Item>
-          <Menu.Item key="component" onClick={this.changeContent.bind(this, 'component', true)}>
+          <Menu.Item key="component" onClick={() => this.changeContent('component', true)}>
             <Icon type="api"/>
             <span>组件</span>
           </Menu.Item>
-          <Menu.Item key="model" onClick={this.changeContent.bind(this, 'model', true)}>
+          <Menu.Item key="model" onClick={() => this.changeContent('model', true)}>
             <Icon type="deployment-unit"/>
             <span>模型</span>
           </Menu.Item>
-          <Menu.Item key="setting" onClick={this.changeContent.bind(this, 'setting', false)}>
+          <Menu.Item key="setting" onClick={() => this.changeContent('setting', false)}>
             <Icon type="setting"/>
             <span>设置</span>
           </Menu.Item>

@@ -18,7 +18,7 @@ export function login(user) {
  */
 export function sendEmail(data) {
   return request(`${USER_API}sendEmail?email=${data.email}`, {
-    method: 'POST',
+    method: 'GET',
     headers: {
       'Content-Type': 'application/json',
     }
@@ -34,6 +34,24 @@ export function register(data) {
   });
 }
 
-export function logout() {
-  return request(`${USER_API}logout`);
+export function logout(token) {
+  return request(`${USER_API}logout`,{
+    headers: {
+      token: token,
+    },
+  });
+}
+
+export function checkTokenVaild() {
+  const sessionStorage = window.sessionStorage;
+  const token = sessionStorage.getItem('token');
+  return !!token;
+}
+
+export function sendToken(func, ...args) {
+  console.log('args', args);
+  const sessionStorage = window.sessionStorage;
+  const token = sessionStorage.getItem('token');
+
+  return func.apply(this, args.concat(token));
 }

@@ -39,3 +39,12 @@ export function allExperiment(data) {
 export function getExperimentDetail(data) {
 
 }
+
+
+
+/**
+ * 运行实验
+ */
+export function run() {
+
+}

@@ -1,4 +1,5 @@
 import * as ExperimentService from "../services/ExperimentService";
+import { getComponents } from "../services/ComponentService";
 import * as ExperimentMock from '../Mock/ExperimentMock';
 import * as RegisterNode from '../utils/registerNode';
 import * as ComponentMock from "../Mock/ComponentMock";
@@ -32,6 +33,8 @@ export default {
       console.log('create', response);
     },
     * registerNode({payload: data}, {call, put, select}) {  // eslint-disable-line
+      const response = yield call(getComponents);
+      console.log('registerNode', response);
       const experiment = yield select(state => state.experiment);
       if (experiment.components.length === 0) {
         console.log("注册节点");

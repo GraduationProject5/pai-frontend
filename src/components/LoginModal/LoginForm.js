@@ -19,6 +19,8 @@ class LoginForm extends React.Component {
           type: 'user/login',
           payload: data,
         });
+        // 清空表单数据
+        this.props.form.resetFields();
       }
     });
   };

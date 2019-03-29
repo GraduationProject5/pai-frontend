@@ -9,9 +9,9 @@ import MainLayout from '../components/MainLayout/MainLayout';
 class IndexPage extends React.Component {
 
   handleStart = () => {
-    const user = this.props.user;
+    const userInfo = this.props.userInfo;
 
-    if (user) {
+    if (userInfo) {
       this.props.dispatch(routerRedux.push('/experiment'));
     } else {
       this.props.dispatch({
@@ -41,8 +41,8 @@ class IndexPage extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const { user } = state.user;
-  return { user };
+  const { userInfo } = state.user;
+  return { userInfo };
 }
 
 

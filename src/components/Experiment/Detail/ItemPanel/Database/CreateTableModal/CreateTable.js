@@ -75,23 +75,31 @@ class CreateTable extends React.Component {
     }
   };
 
+  addColumnDescription = (tableFields) => {
+
+  };
+
   submit = () => {
     console.log("submit");
-    this.props.form.validateFields((err, values) => {
-      console.log("err", err);
-      console.log("CreateTable", values);
-      if (!err) {
-        const data = {
-          tableName: values.tableName,
-          description: values.description,
-          columnList: values.columnList
-        };
-        this.props.dispatch({
-          type: 'data/createTableByColumn',
-          payload: data,
-        });
-      }
-    });
+    if (this.state.mode === 'field') {
+      this.props.form.validateFields(['tableName', 'description', 'tableStructure', 'tableFields'], (err, values) => {
+        console.log("err", err);
+        console.log("CreateTable", values);
+        if (!err) {
+          const data = {
+            tableName: values.tableName,
+            description: values.description,
+            columnList: values.tableFields
+          };
+          this.props.dispatch({
+            type: 'data/createTableByColumn',
+            payload: data,
+          });
+        }
+      });
+    } else {
+
+    }
   };
 
 
@@ -136,17 +144,17 @@ class CreateTable extends React.Component {
           <Col span={5}>
             {getFieldDecorator(`tableFields[${tableFieldKey}].columnType`, {
               validateTrigger: ['onChange', 'onBlur'],
-              initialValue: "bigint",
+              initialValue: "ColumnType.BIGINT",
             })(
               <Select
                 size="small"
               >
-                <Option value="bigint">bigint</Option>
-                <Option value="double">double</Option>
-                <Option value="decimal">decimal</Option>
-                <Option value="string">string</Option>
-                <Option value="boolean">boolean</Option>
-                <Option value="datetime">datetime</Option>
+                <Option value="ColumnType.BIGINT">bigint</Option>
+                <Option value="ColumnType.DOUBLE">double</Option>
+                <Option value="ColumnType.DECIMAL">decimal</Option>
+                <Option value="ColumnType.STRING">string</Option>
+                <Option value="ColumnType.BOOLEAN">boolean</Option>
+                <Option value="ColumnType.DATETIME">datetime</Option>
               </Select>
             )}
           </Col>

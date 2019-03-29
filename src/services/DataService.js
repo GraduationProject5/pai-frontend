@@ -4,14 +4,13 @@ const DATA_API = '/api/data/';
 
 /**
  * 用户建表 （通过表格填写列属性）
- * @param data
- * @returns {*}
  */
-export function createTableByColumn(data) {
-  return request(`${DATA_API}createTableByColumn`, {
+export function createTableByColumn(data, token) {
+  return request(`${DATA_API}createTableByColumn?tableName=${data.tableName}&description=${data.description}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      token: token,
     },
     body: JSON.stringify(data),
   });
@@ -37,11 +36,12 @@ export function createTableByScript(data) {
  * @param data
  * @returns {*}
  */
-export function uploadData(data) {
+export function uploadData(data, token) {
   return request(`${DATA_API}importData`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      token: token
     },
     body: JSON.stringify(data),
   });
@@ -51,9 +51,11 @@ export function uploadData(data) {
  * 查看用户自建表列表
  * @returns {*}
  */
-export function allTable() {
+export function allTable(token) {
   return request(`${DATA_API}allTable`, {
-    credentials: 'include',
+    headers: {
+      token: token,
+    },
   });
 }
 
@@ -61,9 +63,25 @@ export function allTable() {
  * 查看某张表的属性（有哪些列）
  * @returns {*}
  */
-export function tableDetail() {
+export function tableDetail(token) {
   return request(`${DATA_API}tableDetail`, {
-    credentials: 'include',
+    headers: {
+      token: token,
+    },
+  });
+}
+
+/**
+ * 获取表的所有行记录
+ * @param tableName
+ * @param token
+ * @returns {*}
+ */
+export function tableData(tableName, token) {
+  return request(`${DATA_API}tableData?tableName=${tableName}`, {
+    headers: {
+      token: token,
+    },
   });
 }
 

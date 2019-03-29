@@ -90,7 +90,7 @@ class RegisterForm extends React.Component {
             })(
               <Input
                 prefix={<Icon type="lock" style={{fontSize: 18, color: '#79589F'}}/>} type="password"
-                placeholder="确认密码"
+                placeholder="密码"
               />,
             )}
           </FormItem>

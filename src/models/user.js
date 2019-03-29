@@ -1,12 +1,16 @@
+import {message} from 'antd';
 import * as UserService from '../services/UserService';
+import {routerRedux} from 'dva/router';
+import {USER_MESSAGE} from '../services/Message';
 
 export default {
 
   namespace: 'user',
 
   state: {
-    user: '',
+    userInfo: '',
     loginModalVisible: false,
+    code: '', // 验证码
   },
 
   subscriptions: {
@@ -17,78 +21,84 @@ export default {
   },
 
   effects: {
-    * fetch({payload}, {call, put}) {  // eslint-disable-line
-      yield put({type: 'save'});
-    },
-    * login({payload: user}, {call, put, select}) {
+    * login({payload: user}, {call, put}) {
       const response = yield call(UserService.login, user);
       console.log('login', response);
       // 关闭登录弹出框
-      yield put({
-        type: 'saveLoginModalVisible',
-        payload: {
-          loginModalVisible: false,
-        },
-      });
-      // 保存用户信息
-      yield put({
-        type: 'saveUserLoginInfo',
-        payload: {
-          user: {},
-        },
-      });
-      // if (response.data.code === HttpMessage.result.SUCCESS) {
-      //   message.success(response.data.message);
-
-      //   const userModel = yield select(state => state.user);
-      //   if (userModel.isNeedRefresh) {
-      //     yield put({
-      //       type: 'getUserAllPictures',
-      //     });
-      //     yield put({
-      //       type: 'getUserAllGalleries',
-      //     });
-      //   }
-      // } else {
-      //   // 用户名或密码错误
-      //   message.error(response.data.message);
-      // }
+      if (response && response.result) {
+        yield put({
+          type: 'saveLoginModalVisible',
+          payload: {
+            loginModalVisible: false,
+          },
+        });
+        // 保存用户信息
+        yield put({
+          type: 'saveUserLoginInfo',
+          payload: {
+            userInfo: response,
+          },
+        });
+        const sessionStorage = window.sessionStorage;
+        sessionStorage.setItem('token', response.token);
+      } else if (response.message) {
+        message.error(USER_MESSAGE[response.message]);
+      } else {
+        message.error('登录失败');
+      }
     },
-    *getCheckCode({ payload: data }, { call, put }) {
-      const response = yield call(UserService.sendEmail, data);
+    * getCheckCode({payload: data}, {call, put}) {
+      const response = yield call(UserService.sendToken, UserService.sendEmail, data);
       console.log("getCheckCode", response);
+      if (response && response.result) {
+        message.success('获取验证码成功，请到对应邮箱查收验证码');
+        yield put({
+          type: 'saveCode',
+          payload: {
+            code: response.code,
+          },
+        });
+      } else if (!response.result) {
+        message.error(USER_MESSAGE[response.code]);
+      } else {
+        message.error('获取验证码失败');
+      }
     },
-    *register({ payload: data }, { call, put }) {
-      const response = yield call(UserService.register, data);
-      console.log("register", response);
+    * register({payload: data}, {call, put, select}) {
+      const user = yield select(state => state.user);
+      if (user.code === data.code) {
+        const response = yield call(UserService.register, data);
+        console.log("register", response);
+        if (response && response.result) {
+          message.success('注册成功');
+        } else if (!response.result) {
+          message.error(USER_MESSAGE[response.code]);
+        } else {
+          message.error('注册失败');
+        }
+      } else {
+        message.error('验证码错误');
+      }
     },
-    *logout({ payload }, { call, put }) {
-      const response = yield call(UserService.logout);
-      console.log("logout", response);
+    * logout({payload}, {call, put}) {
+      yield call(UserService.sendToken, UserService.logout);
       // 清空用户信息
       yield put({
         type: 'saveUserLoginInfo',
         payload: {
-          user: '',
+          userInfo: '',
         },
       });
-      // if (response.data.code === HttpMessage.result.SUCCESS) {
-      //   message.success(response.data.message);
-      //   // 清空用户信息
-      //   yield put({
-      //     type: 'saveUserLoginInfo',
-      //     payload: {
-      //       userInfo: '',
-      //     },
-      //   });
-      //   yield put(routerRedux.push('/'));
-      // }
+      yield put(routerRedux.push('/'));
     },
   },
 
   reducers: {
-    saveUserLoginInfo(state, {payload: {user}}) {
-      return {...state, user};
+    saveUserLoginInfo(state, {payload: {userInfo}}) {
+      return {...state, userInfo};
+    },
+    saveCode(state, {payload: {code}}) {
+      return {...state, code};
     },
     saveLoginModalVisible(state, {payload: {loginModalVisible}}) {
       return {...state, loginModalVisible};

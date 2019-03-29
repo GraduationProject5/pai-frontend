@@ -83,16 +83,26 @@ class PropertyPanel extends React.Component {
   render() {
     const {selectedModel, className} = this.props;
     const {name, desc} = this.state;
-
+    let paras = selectedModel && selectedModel.paras;
+    if (paras) paras = JSON.parse(paras);
+    console.log(paras);
     return (
       <div className={`${styles.container} ${className}`} ref={el => {
         this.propertyPanelContainer = el;
       }}>
-        <div data-status="node-selected" className={`${styles.panel} pannel`}>
-          <div className={styles["panel-title"]}>模型详情</div>
-          <div className={styles["block-container"]}>
-            <p>shape:{selectedModel.shape}</p>
-            <p>name:{selectedModel.name}</p>
+        <div data-status="node-selected" className={`${styles.property} pannel`}>
+          <h3>参数设置</h3>
+          <div className={styles.propertyContent}>
+            {
+              paras && Object.keys(paras).map((key, index) => {
+                return (
+                  <div className={styles.inputItem} key={index}>
+                    <div className={styles.key}>{key}</div>
+                    <Input value={paras[key]} onChange={(e) => this.handleInputChange(e, this.INPUT_TYPE.NAME)}/>
+                  </div>
+                )
+              })
+            }
           </div>
         </div>
         <div data-status="canvas-selected" className={`${styles.property} pannel`}>

@@ -12,7 +12,7 @@ export function createTableByColumn(data, token) {
       'Content-Type': 'application/json',
       token: token,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify(data.requestBody),
   });
 }
 
@@ -63,8 +63,8 @@ export function allTable(token) {
  * 查看某张表的属性（有哪些列）
  * @returns {*}
  */
-export function tableDetail(token) {
-  return request(`${DATA_API}tableDetail`, {
+export function tableDetail(tableName, token) {
+  return request(`${DATA_API}tableDetail?tableName=${tableName}`, {
     headers: {
       token: token,
     },

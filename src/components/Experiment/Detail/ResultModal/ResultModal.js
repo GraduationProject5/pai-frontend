@@ -15,7 +15,7 @@ class ResultModal extends React.Component {
   };
 
   render() {
-    const {visible, result} = this.props;
+    const {visible, result, tableData} = this.props;
     return (
       <Modal
         title="查看数据"
@@ -37,7 +37,8 @@ class ResultModal extends React.Component {
 
 function mapStateToProps(state) {
   const {result} = state.component;
-  return {result};
+  const { tableData } = state.data;
+  return {result, tableData};
 }
 
 

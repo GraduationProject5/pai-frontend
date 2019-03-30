@@ -3,6 +3,7 @@ import { getComponents } from "../services/ComponentService";
 import * as ExperimentMock from '../Mock/ExperimentMock';
 import * as RegisterNode from '../utils/registerNode';
 import * as ComponentMock from "../Mock/ComponentMock";
+import {sendToken} from "../services/UserService";
 
 export default {
 
@@ -48,19 +49,19 @@ export default {
         });
       }
     },
-    * getAllExperiment({payload: data}, {call, put}) {  // eslint-disable-line
-      // const response = yield call(ExperimentService.allExperiment, data);
-      // console.log('getAllExperiment', response);
+    * getAllExperiment({payload}, {call, put}) {  // eslint-disable-line
+      const response = yield call(sendToken, ExperimentService.allExperiment);
+      console.log('getAllExperiment', response);
       yield put({
         type: 'saveExperiments',
         payload: {
-          experiments: ExperimentMock.experiments
+          experiments: response.experiments
         }
       });
       yield put({
         type: 'saveExperimentDetail',
         payload: {
-          experimentDetail: ExperimentMock.experiments[0]
+          experimentDetail: response.experiments[0]
         }
       });
     },

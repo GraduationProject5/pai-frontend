@@ -13,6 +13,11 @@
     width: 100%;
     background-color: #F5F5F5;
 
+    :global {
+      .ant-tabs-ink-bar-animated {
+        min-width: 68px;
+      }
+    }
 
     h3 {
       height: 40px;

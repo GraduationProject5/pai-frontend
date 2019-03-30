@@ -44,10 +44,10 @@ class Experiment extends React.Component {
           {
             experiments.map((experiment) => {
               return (
-                <div className={stylesExperiment.item} key={experiment.id}
-                     tabIndex={experiment.id}
-                      onClick={() => this.getExperimentDetail(experiment.id)}>
-                  <img alt="type" src={experimentImgUrl} className={stylesExperiment.typeImg}/>{experiment.name}
+                <div className={stylesExperiment.item} key={experiment.experimentID}
+                     tabIndex={experiment.experimentID}
+                      onClick={() => this.getExperimentDetail(experiment.experimentID)}>
+                  <img alt="type" src={experimentImgUrl} className={stylesExperiment.typeImg}/>{experiment.experimentName}
                 </div>
               );
             })

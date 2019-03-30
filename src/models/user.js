@@ -16,6 +16,14 @@ export default {
   subscriptions: {
     setup({dispatch, history}) {  // eslint-disable-line
       return history.listen(({pathname, query}) => {
+        if (pathname === '/experiment' || pathname === '/') {
+          dispatch({
+            type: 'initUserInfo',
+            payload: {
+              pathname
+            }
+          });
+        }
       });
     },
   },
@@ -45,6 +53,30 @@ export default {
         message.error(USER_MESSAGE[response.message]);
       } else {
         message.error('登录失败');
+      }
+    },
+    * initUserInfo({payload: {pathname}}, {call, put}) {
+      const sessionStorage = window.sessionStorage;
+      const token = sessionStorage.getItem('token');
+      if (token) {
+        // 保存用户信息
+        yield put({
+          type: 'saveUserLoginInfo',
+          payload: {
+            userInfo: {
+              token: token
+            },
+          },
+        });
+      } else {
+        if (pathname === '/experiment') {
+          yield put({
+            type: 'saveLoginModalVisible',
+            payload: {
+              loginModalVisible: true,
+            },
+          });
+        }
       }
     },
     * getCheckCode({payload: data}, {call, put}) {
@@ -89,6 +121,8 @@ export default {
           userInfo: '',
         },
       });
+      const sessionStorage = window.sessionStorage;
+      sessionStorage.setItem('token', '');
       yield put(routerRedux.push('/'));
     },
   },

@@ -36,6 +36,7 @@ export function register(data) {
 
 export function logout(token) {
   return request(`${USER_API}logout`,{
+    method: 'POST',
     headers: {
       token: token,
     },

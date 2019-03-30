@@ -1,6 +1,6 @@
 import request from '../utils/request';
 
-const EXPERIMENT_API = '/api/experiment/';
+const EXPERIMENT_API = '/api/scenario/';
 
 /**
  * 创建实验
@@ -22,13 +22,11 @@ export function create(data) {
  * @param data
  * @returns {*}
  */
-export function allExperiment(data) {
+export function allExperiment(token) {
   return request(`${EXPERIMENT_API}allExperiment`, {
-    method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      token: token,
     },
-    body: JSON.stringify(data),
   });
 }
 

@@ -24,6 +24,7 @@ class Component extends React.Component {
         <span className={`${styles.item} getItem`} data-name={component.name} data-shape={component.type}
               data-nodeid={component.id}
               data-type="node"
+              data-kind="component"
               data-paras={JSON.stringify(component.paras)}
               data-size="170*34">
                     <img alt="type" src={componentImgUrl} className={styles.typeImg}/>{component.name}

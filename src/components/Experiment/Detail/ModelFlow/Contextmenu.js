@@ -27,13 +27,23 @@ class Contextmenu extends React.Component {
   }
 
   // 获取对应组件结果
-  getResult = (nodeid) => {
-    this.props.dispatch({
-      type: 'component/getResult',
-      payload: {
-        nodeId: +nodeid,
-      }
-    });
+  getResult = (model) => {
+    if (model.kind === 'table') {
+      this.props.dispatch({
+        type: 'data/getTableData',
+        payload: {
+          tableName: model.name,
+        }
+      });
+    } else if (model.kind === 'component' ){
+      this.props.dispatch({
+        type: 'component/getResult',
+        payload: {
+          nodeId: +model.nodeid,
+        }
+      });
+    }
+
   };
 
   showResultModal = (visible, nodeid) => {
@@ -63,9 +73,9 @@ class Contextmenu extends React.Component {
           <div className={`${styles.command}`}>
             <span onClick={() => {
               this.showResultModal(true);
-              this.getResult(selectedModel.nodeid);
+              this.getResult(selectedModel);
             }}>查看数据</span>
-            <ResultModal visible={modalVisible} setModalVisible={this.showResultModal} node={selectedModel} />
+            <ResultModal visible={modalVisible} setModalVisible={this.showResultModal} />
           </div>
         </div>
         <div data-status="edge-selected" className="menu">

@@ -34,10 +34,15 @@ class Database extends React.Component {
           {
             dataTables.map((table) => {
               return (
-                <div className={stylesDatabase.tableItem} key={table.id}>
-                  <span className={`${styles.item} getItem`} data-name={`${table.name}`} data-shape="read-data-table"
-                        data-type="node" data-size="170*34">
-                    <img alt="type" src={databaseImgUrl} className={styles.typeImg}/>{table.name}
+                <div className={stylesDatabase.tableItem} key={table.tableID}>
+                  <span className={`${styles.item} getItem`}
+                        data-name={table.tableName}
+                        data-desc={table.description}
+                        data-shape="read-data-table"
+                        data-kind="table"
+                        data-type="node"
+                        data-size="170*34">
+                    <img alt="type" src={databaseImgUrl} className={styles.typeImg}/>{table.tableName}
                   </span>
                 </div>
               );

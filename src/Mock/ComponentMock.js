@@ -1,3 +1,28 @@
+export const sections = [
+  {
+    sectionID: 1,
+    sectionName: '机器学习组件',
+    components: [
+      {
+        componentID: 2,
+        componentName: 'svm',
+        funcName: 'svm',
+        settings: {
+          'a': 1,
+          'b': 2,
+          'c': 3
+        },
+      }
+    ]
+  },
+  {
+    sectionID: 2,
+    sectionName: '评估组件',
+    components: []
+  },
+];
+
+
 export const components = [
   {
     id: 1,
@@ -277,3 +302,62 @@ export const result = {
     }
   ],
 };
+
+
+const temp = {
+  experimentID: 13,
+  nodes: [
+    {
+      desc: "testCreateTableByColumn",
+      id: "af97edd6",
+      index: 0,
+      kind: "table",
+      label: "testCreateTableByColumn",
+      name: "testCreateTableByColumn",
+      shape: "read-data-table",
+      size: "170*34",
+      type: "node",
+      x: 278,
+      y: -25
+    },
+    {
+      id: "e544928d",
+      index: 0,
+      kind: "component",
+      label: "svm",
+      name: "svm",
+      nodeid: "2",
+      settings: {A: 1, B: 2, C: 3},
+      shape: "svm",
+      size: "170*34",
+      type: "node",
+      x: 164,
+      y: 99
+    },
+    {
+      id: "5b5f9ee2",
+      index: 1,
+      kind: "component",
+      label: "逻辑回归",
+      name: "逻辑回归",
+      nodeid: "3",
+      settings: {A: 1, B: 2, C: 3},
+      shape: "lr",
+      size: "170*34",
+      type: "node",
+      x: 173,
+      y: 242
+    }
+  ],
+  edges: [
+    {
+      id: "cd1a85f8",
+      index: 2,
+      source: "e544928d",
+      sourceAnchor: 1,
+      target: "5b5f9ee2",
+      targetAnchor: 0
+    }
+  ]
+};
+

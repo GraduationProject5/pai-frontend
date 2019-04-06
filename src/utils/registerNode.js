@@ -85,18 +85,25 @@ Flow.registerNode('model-card', {
  * @param components
  */
 export function registerComponents(components) {
-  components.map((component) => {
-    if (component.isChild) { // 组件
-      Flow.registerNode(component.type, {
-        label: component.name,
+  components && components.map && components.map((component) => {
+    if (component.componentID) { // 组件
+      Flow.registerNode(component.funcName, {
+        label: component.componentName,
         color_type: '#1890FF',
         typeImgUrl: componentImgUrl,
         state_icon_url: 'https://gw.alipayobjects.com/zos/rmsportal/MXXetJAxlqrbisIuZxDO.svg',
         // 设置锚点
-        anchor: component.anchor
+        anchor: [
+          [0.5, 0, {
+            type: 'input'
+          }],
+          [0.5, 1, {
+            type: 'output'
+          }]
+        ]
       }, 'model-card');
     } else { // 组件大类
-      registerComponents(component.children);
+      registerComponents(component.components);
     }
   })
 }

@@ -1,18 +1,19 @@
+import {message} from 'antd';
 import * as ExperimentService from "../services/ExperimentService";
 import { getComponents } from "../services/ComponentService";
-import * as ExperimentMock from '../Mock/ExperimentMock';
 import * as RegisterNode from '../utils/registerNode';
-import * as ComponentMock from "../Mock/ComponentMock";
-import {sendToken} from "../services/UserService";
+import {checkTokenVaild, sendToken} from "../services/UserService";
+import {handleSettings, sleep} from "../utils/util";
 
 export default {
 
   namespace: 'experiment',
 
   state: {
-    experiments: [],     // 实验列表
-    components: [],      // 实验组件
-    experimentDetail: {} // 实验详情
+    experiments: [],      // 实验列表
+    components: [],       // 实验组件
+    experimentDetail: {}, // 实验详情
+    isRunning: false,     // 是否正在运行
   },
 
   subscriptions: {
@@ -20,31 +21,24 @@ export default {
       return history.listen(({ pathname }) => {
         if (pathname === '/experiment') {
           dispatch({ type: 'registerNode' });
+          dispatch({ type: 'getAllExperiment' });
         }
       });
     },
   },
 
   effects: {
-    * fetch({payload}, {call, put}) {  // eslint-disable-line
-      yield put({type: 'save'});
-    },
-    * create({payload: data}, {call, put}) {  // eslint-disable-line
-      const response = yield call(ExperimentService.create, data);
-      console.log('create', response);
-    },
     * registerNode({payload: data}, {call, put, select}) {  // eslint-disable-line
       const response = yield call(getComponents);
       console.log('registerNode', response);
       const experiment = yield select(state => state.experiment);
       if (experiment.components.length === 0) {
-        console.log("注册节点");
-        RegisterNode.registerComponents(ComponentMock.components);
+        RegisterNode.registerComponents(response);
         RegisterNode.registerDataTable();
         yield put({
           type: 'saveComponents',
           payload: {
-            components: ComponentMock.components
+            components: response || []
           }
         });
       }
@@ -58,22 +52,76 @@ export default {
           experiments: response.experiments
         }
       });
-      yield put({
-        type: 'saveExperimentDetail',
-        payload: {
-          experimentDetail: response.experiments[0]
+      if (response.experiments) {
+        if (response.experiments.length > 0) {
+          yield put({
+            type: 'getExperimentDetail',
+            payload: {
+              id: response.experiments[0].experimentID
+            }
+          });
         }
-      });
+      } else {
+        yield put({
+          type: 'user/saveLoginModalVisible',
+          payload: {
+            loginModalVisible: true,
+          },
+        });
+      }
     },
-    * getExperimentDetail({payload: data}, {call, put}) {  // eslint-disable-line
-      // const response = yield call(ExperimentService.getExperimentDetail, data);
-      // console.log('getExperimentDetail', response);
-      yield put({
-        type: 'saveExperimentDetail',
-        payload: {
-          experimentDetail: ExperimentMock.experiments[data.id - 1]
+    * getExperimentDetail({payload: {id}}, {call, put}) {  // eslint-disable-line
+      if(checkTokenVaild()) {
+        const response = yield call(sendToken, ExperimentService.getExperimentDetail, id);
+        console.log('getExperimentDetail', response);
+        if (response && response.experimentID)  {
+          handleSettings(response.nodes);
+          yield put({
+            type: 'saveExperimentDetail',
+            payload: {
+              experimentDetail: response
+            }
+          });
+        } else {
+          message.error("获取实验详情失败");
         }
-      });
+      } else {
+        yield put({
+          type: 'user/saveLoginModalVisible',
+          payload: {
+            loginModalVisible: true,
+          },
+        });
+      }
+    },
+    * runExperiment({payload: {id}}, {call, put}) {  // eslint-disable-line
+      if(checkTokenVaild()) {
+        yield put({
+          type: 'saveRunning',
+          payload: {
+            isRunning: true,
+          },
+        });
+        const response = yield call(sendToken, ExperimentService.allExperiment);
+        if (response && response.experimentID)  {
+          message.success("运行实验成功");
+        } else {
+          message.error("运行实验失败");
+        }
+        yield put({
+          type: 'saveRunning',
+          payload: {
+            isRunning: false,
+          },
+        });
+      } else {
+        yield put({
+          type: 'user/saveLoginModalVisible',
+          payload: {
+            loginModalVisible: true,
+          },
+        });
+      }
     },
   },
 
@@ -89,6 +137,9 @@ export default {
     },
     saveComponents(state, {payload: {components}}) {
       return {...state, components}
+    },
+    saveRunning(state, {payload: {isRunning}}) {
+      return {...state, isRunning}
     },
   },
 

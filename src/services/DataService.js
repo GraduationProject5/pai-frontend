@@ -18,32 +18,31 @@ export function createTableByColumn(data, token) {
 
 /**
  * 用户建表 （通过MySql脚本）
- * @param data
  * @returns {*}
  */
-export function createTableByScript(data) {
-  return request(`${DATA_API}createTableByScript`, {
+export function createTableByScript(data, token) {
+  return request(`${DATA_API}createTableByScript?tableName=${data.tableName}&sql=${data.sql}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      token: token,
     },
-    body: JSON.stringify(data),
   });
 }
 
 /**
  * 用户导入数据到自建表中
- * @param data
  * @returns {*}
  */
 export function uploadData(data, token) {
-  return request(`${DATA_API}importData`, {
+  const formdata = new window.FormData();
+  formdata.append('file', data.file.originFileObj);
+  return request(`${DATA_API}insertCsv?tableName=${data.tableName}`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
-      token: token
+      token: token,
     },
-    body: JSON.stringify(data),
+    body: formdata,
   });
 }
 

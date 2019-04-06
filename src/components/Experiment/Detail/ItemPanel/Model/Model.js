@@ -8,14 +8,6 @@ const TreeNode = Tree.TreeNode;
 
 class Model extends React.Component {
 
-  onSelect = () => {
-    console.log('Trigger Select');
-  };
-
-  onExpand = () => {
-    console.log('Trigger Expand');
-  };
-
   itemMock = [
     <span className={`${styles.item} getItem`} data-name="K 均值聚类" data-shape="k-means" data-type="node" data-size="170*34">
       <img alt="type" src={modelImgUrl} className={styles.typeImg}/>K 均值聚类
@@ -41,10 +33,6 @@ class Model extends React.Component {
     return (
       <DirectoryTree
         multiple
-        // defaultExpandAll
-        // showIcon={true}
-        onSelect={this.onSelect}
-        onExpand={this.onExpand}
         className={styles.container}
       >
         <TreeNode className={styles.parent} title="parent 0" key="0-0">

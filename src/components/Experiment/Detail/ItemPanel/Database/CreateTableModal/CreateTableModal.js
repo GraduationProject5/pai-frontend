@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from "prop-types";
-import {Modal, Steps, Button} from 'antd';
+import {Modal, Steps, Button, message} from 'antd';
 import {connect} from 'dva';
 import styles from './CreateTableModal.scss';
 import CreateTable from './CreateTable';
@@ -22,7 +22,6 @@ class CreateTableModal extends React.Component {
     if (this.createTableRef.validate()) {
       const current = this.state.current + 1;
       this.setState({current});
-      this.createTableRef.submit();
     }
   };
 
@@ -31,17 +30,29 @@ class CreateTableModal extends React.Component {
     this.setState({current});
   };
 
-  submit = () => {
-    // TODO 异步处理
+  submit = async () => {
     if (this.uploadDataRef.validate()) {
       // 创建表
-      this.createTableRef.submit();
-      // 上传数据
-      this.uploadDataRef.submit();
+      const createTableResult = await this.createTableRef.submit();
+      if (createTableResult) {
+        // 上传数据
+        const uploadDataResult = await this.uploadDataRef.submit();
+        if (uploadDataResult) {
+          message.success("创建数据成功");
+          this.close();
+          this.props.dispatch({
+            type: 'data/getAllTable'
+          });
+        } else {
+          message.error("上传数据失败")
+        }
+      } else {
+        message.error("创建表失败")
+      }
     }
   };
 
-  cancel = () => {
+  close = () => {
     this.createTableRef.clear();
     if (this.uploadDataRef) {
       this.uploadDataRef.clear();
@@ -104,7 +115,7 @@ class CreateTableModal extends React.Component {
                   </Button>
                 </React.Fragment>
             }
-            <Button onClick={() => this.cancel()} style={{marginLeft: 8}}>关闭</Button>
+            <Button onClick={() => this.close()} style={{marginLeft: 8}}>关闭</Button>
           </div>
         </div>
       </Modal>

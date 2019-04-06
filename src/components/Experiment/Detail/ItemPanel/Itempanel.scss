@@ -8,6 +8,7 @@
   background-color: #F3F3F3;
   z-index: 2;
   font-size: $small-font-size;
+  overflow-y: scroll;
 
   .parent {
     padding: 0;
@@ -69,7 +70,7 @@
 
 .item {
   color: $gray-color-ultra-dark;
-  width: 180px;
+  //width: 180px;
   height: 30px;
   line-height: 30px;
   padding: 4px 2px;

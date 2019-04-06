@@ -56,43 +56,5 @@ export default class Editor extends React.Component {
         });
       });
     });
-    // 生成 G6 Editor 编辑器
-    // const editor = new G6Editor();
-    // const minimap = new G6Editor.Minimap({
-    //   container: 'minimap',
-    //   height: 120,
-    //   width: 200
-    // });
-    // const toolbar = new G6Editor.Toolbar({
-    //   container: 'toolbar'
-    // });
-    // const contextmenu = new G6Editor.Contextmenu({
-    //   container: 'contextmenu'
-    // });
-    // const itempanel = new G6Editor.Itempanel({
-    //   container: 'itempanel'
-    // });
-    // const detailpanel = new G6Editor.Detailpanel({
-    //   container: 'detailpanel'
-    // });
-    // const page = this.createPage();
-    // page.on('afteritemselected', ev => {
-    //   this.setState({
-    //     selectedModel: ev.item.getModel()
-    //   });
-    // });
-    // page.on('afterzoom', ev => {
-    //   this.setState({
-    //     curZoom: ev.updateMatrix[0]
-    //   });
-    // });
-    // editor.add(minimap);
-    // editor.add(toolbar);
-    // editor.add(contextmenu);
-    // editor.add(itempanel);
-    // editor.add(detailpanel);
-    // editor.add(page);
-    // this.page = page;
-    // this.editor = editor;
   }
 }

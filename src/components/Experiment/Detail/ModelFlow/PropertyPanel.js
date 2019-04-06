@@ -4,6 +4,9 @@ import PropTypes from 'prop-types';
 import {Input, Tabs} from 'antd';
 import {connect} from 'dva';
 import styles from './PropertyPanel.scss';
+import {saveSettingsForNode} from "../../../../services/ComponentService";
+import {sendToken} from "../../../../services/UserService";
+import {updateExperimentInfo} from "../../../../services/ExperimentService";
 
 const TextArea = Input.TextArea;
 const TabPane = Tabs.TabPane;
@@ -14,8 +17,9 @@ class PropertyPanel extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
-      desc: ''
+      name: '',   // 实验名称
+      desc: '',   // 实验描述
+      settings: {},  // 组件参数
     }
   }
 
@@ -23,6 +27,10 @@ class PropertyPanel extends React.Component {
     const {editor} = this.props;
     const propertyPanel = this.createPropertyPanel(this.propertyPanelContainer);
     editor.add(propertyPanel);
+    this.setState({
+      name: this.props.experimentDetail.experimentName,
+      desc: this.props.experimentDetail.description
+    });
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
@@ -31,6 +39,15 @@ class PropertyPanel extends React.Component {
         this.setState({
           name: nextProps.experimentDetail.experimentName,
           desc: nextProps.experimentDetail.description
+        });
+      }
+    }
+
+    if (this.props.selectedModel !== nextProps.selectedModel) {
+      const model = nextProps.selectedModel;
+      if (model && model.settings) {
+        this.setState({
+          settings: JSON.parse(model.settings)
         });
       }
     }
@@ -43,16 +60,27 @@ class PropertyPanel extends React.Component {
   }
 
   INPUT_TYPE = {
-    NAME: 1,
-    DESC: 2
+    INFO: 1,
+    SETTINGS: 2
   };
 
-  changeExperimentName = () => {
-    console.log("change name")
+  changeExperimentInfo = () => {
+    const data = {
+      experimentId: this.props.experimentDetail.experimentID,
+      requestBody: {
+        experimentName: this.state.name,
+        description: this.state.desc
+      }
+    };
+    sendToken(updateExperimentInfo, data);
   };
 
-  changeExperimentDesc = () => {
-    console.log("change desc");
+  changeComponentSettings = () => {
+    const data = {
+      nodeID: +this.props.selectedModel.nodeid,
+      settings: this.state.settings
+    };
+    sendToken(saveSettingsForNode, data);
   };
 
   inputDebounce = (func, delay) => {
@@ -64,20 +92,28 @@ class PropertyPanel extends React.Component {
     }
   };
 
-  changeName = this.inputDebounce(this.changeExperimentName, 1000);
-  changeDesc = this.inputDebounce(this.changeExperimentDesc, 1000);
+  changeInfo = this.inputDebounce(this.changeExperimentInfo, 3000);
+  changeSettings = this.inputDebounce(this.changeComponentSettings, 3000);
 
-  handleInputChange = (e, type) => {
-    if (type === this.INPUT_TYPE.NAME) {
+  handleInputChange = (e, type, key) => {
+    const value = e.target.value;
+    if (type === this.INPUT_TYPE.INFO) {
       this.setState({
-        name: e.target.value
+        [key]: value
+      }, () => {
+        this.changeInfo();
       });
-      this.changeName(e.target.value);
-    } else if (type === this.INPUT_TYPE.DESC) {
-      this.setState({
-        desc: e.target.value
+    } else if (type === this.INPUT_TYPE.SETTINGS) {
+      this.setState(prevState => {
+        return {
+          settings: {
+            ...(prevState.settings),
+            [key]: value
+          }
+        };
+      }, () => {
+        this.changeSettings()
       });
-      this.changeDesc(e.target.value);
     }
   };
 
@@ -93,6 +129,7 @@ class PropertyPanel extends React.Component {
   };
 
   renderTableProperty = (model) => {
+    const tableDetail = this.props.tableDetail;
     return (
       <Tabs defaultActiveKey="table" onChange={(key) => this.handleTableTabChange(key, model.name)}>
         <TabPane tab="表选择" key="table" className={styles.propertyContent}>
@@ -100,30 +137,50 @@ class PropertyPanel extends React.Component {
             <div className={styles.key}>表名</div>
             <div className={styles.key}>{model.name}</div>
           </div>
+          <div className={styles.inputItem}>
+            <div className={styles.key}>描述</div>
+            <div className={styles.key}>{model.desc}</div>
+          </div>
         </TabPane>
         <TabPane tab="字段信息" key="column" className={styles.propertyContent}>
-          <div className={styles.inputItem}>
-
-          </div>
+          <table className={styles.table}>
+            <thead>
+            <tr>
+              <td>字段</td>
+              <td>类型</td>
+            </tr>
+            </thead>
+            <tbody>
+            {
+              tableDetail && tableDetail.columnVOList && tableDetail.columnVOList.map((column, index) => {
+                return (
+                  <tr key={index}>
+                    <td>{column.columnName}</td>
+                    <td>{column.columnType}</td>
+                  </tr>
+                )
+              })
+            }
+            </tbody>
+          </table>
         </TabPane>
       </Tabs>
     );
   };
 
-  renderComponentProperty = (model) => {
-    let paras = model && model.paras;
-    if (paras) paras = JSON.parse(paras);
-    console.log('组件参数', paras);
+  renderComponentProperty = () => {
+    let settings = this.state.settings;
     return (
       <React.Fragment>
         <h3>参数设置</h3>
         <div className={styles.propertyContent}>
           {
-            paras && Object.keys(paras).map((key, index) => {
+            settings && Object.keys(settings).map((key, index) => {
               return (
-                <div className={styles.inputItem} key={index}>
+                <div className={styles.inputItem} key={key}>
                   <div className={styles.key}>{key}</div>
-                  <Input value={paras[key]} onChange={(e) => this.handleInputChange(e, this.INPUT_TYPE.NAME)}/>
+                  <Input value={settings[key]}
+                         onChange={(e) => this.handleInputChange(e, this.INPUT_TYPE.SETTINGS, key)}/>
                 </div>
               )
             })
@@ -133,9 +190,28 @@ class PropertyPanel extends React.Component {
     );
   };
 
+  renderExperimentProperty = () => {
+    const {name, desc} = this.state;
+    return (
+      <React.Fragment>
+        <h3>实验属性</h3>
+        <div className={styles.propertyContent}>
+          <div className={styles.inputItem}>
+            <div className={styles.key}>名称</div>
+            <Input value={name} onChange={(e) => this.handleInputChange(e, this.INPUT_TYPE.INFO, 'name')}/>
+          </div>
+          <div className={styles.inputItem}>
+            <div className={styles.key}>描述</div>
+            <TextArea rows={4} value={desc}
+                      onChange={(e) => this.handleInputChange(e, this.INPUT_TYPE.INFO, 'desc')}/>
+          </div>
+        </div>
+      </React.Fragment>
+    )
+  };
+
   render() {
     const {selectedModel, className} = this.props;
-    const {name, desc} = this.state;
     let kind = selectedModel && selectedModel.kind;
     let renderProperty;
     if (kind === 'component') {
@@ -154,22 +230,7 @@ class PropertyPanel extends React.Component {
           {renderProperty && renderProperty(selectedModel)}
         </div>
         <div data-status="canvas-selected" className={`${styles.property} pannel`}>
-          <h3>实验属性</h3>
-          <div className={styles.propertyContent}>
-            <div className={styles.item}>
-              <span className={styles.key}>创建日期</span>
-              <span className={styles.value}>2019-1-31 21:05:18</span>
-            </div>
-            <div className={styles.inputItem}>
-              <div className={styles.key}>名称</div>
-              <Input value={name} onChange={(e) => this.handleInputChange(e, this.INPUT_TYPE.NAME)}/>
-            </div>
-            <div className={styles.inputItem}>
-              <div className={styles.key}>描述</div>
-              <TextArea rows={4} value={desc}
-                        onChange={(e) => this.handleInputChange(e, this.INPUT_TYPE.DESC)}/>
-            </div>
-          </div>
+          {this.renderExperimentProperty()}
         </div>
       </div>);
   }
@@ -177,7 +238,7 @@ class PropertyPanel extends React.Component {
 
 function mapStateToProps(state) {
   const {experimentDetail} = state.experiment;
-  const { tableDetail} = state.data;
+  const {tableDetail} = state.data;
   return {experimentDetail, tableDetail};
 }
 

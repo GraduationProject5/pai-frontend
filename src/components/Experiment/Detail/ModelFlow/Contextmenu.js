@@ -67,15 +67,11 @@ class Contextmenu extends React.Component {
             <span>delete</span>
           </div>
           <div className={`${styles.command}`}>
-            <span>{selectedModel.shape}</span>
-            <span>{selectedModel.name}</span>
-          </div>
-          <div className={`${styles.command}`}>
             <span onClick={() => {
               this.showResultModal(true);
               this.getResult(selectedModel);
             }}>查看数据</span>
-            <ResultModal visible={modalVisible} setModalVisible={this.showResultModal} />
+            <ResultModal visible={modalVisible} setModalVisible={this.showResultModal} kind={selectedModel.kind}/>
           </div>
         </div>
         <div data-status="edge-selected" className="menu">

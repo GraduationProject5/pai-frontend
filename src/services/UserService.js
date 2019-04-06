@@ -50,7 +50,6 @@ export function checkTokenVaild() {
 }
 
 export function sendToken(func, ...args) {
-  console.log('args', args);
   const sessionStorage = window.sessionStorage;
   const token = sessionStorage.getItem('token');
 

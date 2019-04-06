@@ -16,7 +16,7 @@ class Experiment extends React.Component {
 
   componentDidMount() {
     this.props.dispatch({
-      type: 'experiment/getAllExperiment'
+      type: 'experiment/getAllExperiment',
     });
   }
 
@@ -25,7 +25,6 @@ class Experiment extends React.Component {
   };
 
   getExperimentDetail = (id) => {
-    console.log("实验id" + id);
     this.props.dispatch({
       type: 'experiment/getExperimentDetail',
       payload: {
@@ -35,17 +34,18 @@ class Experiment extends React.Component {
   };
 
   render() {
-    const {experiments} = this.props;
+    const {experiments, experimentDetail} = this.props;
     const modalVisible = this.state.modalVisible;
 
     return (
       <div className={stylesExperiment.container}>
         <div className={stylesExperiment.experimentList}>
           {
-            experiments.map((experiment) => {
+            experiments && experiments.map((experiment) => {
               return (
                 <div className={stylesExperiment.item} key={experiment.experimentID}
                      tabIndex={experiment.experimentID}
+                     style={experimentDetail.experimentID === experiment.experimentID ? { backgroundColor: '#D9D1DE'} : null}
                       onClick={() => this.getExperimentDetail(experiment.experimentID)}>
                   <img alt="type" src={experimentImgUrl} className={stylesExperiment.typeImg}/>{experiment.experimentName}
                 </div>
@@ -64,8 +64,8 @@ class Experiment extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const {experiments} = state.experiment;
-  return {experiments};
+  const {experiments, experimentDetail} = state.experiment;
+  return {experiments, experimentDetail};
 }
 
 Experiment.propTypes = {};

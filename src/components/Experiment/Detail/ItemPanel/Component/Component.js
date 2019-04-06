@@ -9,33 +9,24 @@ const TreeNode = Tree.TreeNode;
 
 class Component extends React.Component {
 
-
-  onSelect = () => {
-    console.log('Trigger Select');
-  };
-
-  onExpand = () => {
-    console.log('Trigger Expand');
-  };
-
   renderTree = (component) => {
-    if (component.isChild) {
+    if (component.componentID) {
       const item = (
-        <span className={`${styles.item} getItem`} data-name={component.name} data-shape={component.type}
-              data-nodeid={component.id}
+        <span className={`${styles.item} getItem`} data-name={component.componentName} data-shape={component.funcName}
+              data-nodeid={component.componentID}
               data-type="node"
               data-kind="component"
-              data-paras={JSON.stringify(component.paras)}
+              data-settings={JSON.stringify(component.settings)}
               data-size="170*34">
-                    <img alt="type" src={componentImgUrl} className={styles.typeImg}/>{component.name}
+                    <img alt="type" src={componentImgUrl} className={styles.typeImg}/>{component.componentName}
                 </span>);
       return (
-        <TreeNode className={styles.leaf} title={item} key={component.id}/>);
+        <TreeNode className={styles.leaf} title={item} key={component.componentID}/>);
     } else {
       return (
-        <TreeNode className={styles.parent} title={component.name} key={component.id}>
+        <TreeNode className={styles.parent} title={component.sectionName} key={component.sectionID}>
           {
-            component.children.map((child) => {
+            component.components.map((child) => {
               return this.renderTree(child);
             })
           }
@@ -50,14 +41,10 @@ class Component extends React.Component {
     return (
       <DirectoryTree
         multiple
-        // defaultExpandAll
-        // showIcon={true}
-        onSelect={this.onSelect}
-        onExpand={this.onExpand}
         className={styles.container}
       >
         {
-          components.map((component) => {
+          components.map && components.map((component) => {
             return this.renderTree(component)
           })
         }

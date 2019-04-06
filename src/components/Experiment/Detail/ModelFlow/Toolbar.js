@@ -1,8 +1,11 @@
 import React from 'react';
 import G6Editor from '@antv/g6-editor';
-import {Icon} from 'antd'
+import {Icon, message} from 'antd';
+import {connect} from 'dva';
 import PropTypes from 'prop-types';
 import styles from './Toolbar.scss';
+import {save} from "../../../../services/ExperimentService";
+import {sendToken} from "../../../../services/UserService";
 
 class Toolbar extends React.Component {
   createToolbar(container) {
@@ -18,15 +21,36 @@ class Toolbar extends React.Component {
   }
 
   save = () => {
-    console.log("保存项目");
     const data = this.props.editor.getCurrentPage().save();
-    console.log(data);
+    const nodes = data.nodes;
+    nodes.map(node => {
+      if (node.settings) {
+        node.settings = JSON.parse(node.settings);
+      }
+      return node;
+    });
+    const requestBody = {
+        ...data,
+        experimentID: this.props.experimentDetail.experimentID,
+      }
+    ;
+    sendToken(save, requestBody).then(response => {
+      if (response && response.result) {
+        message.success('保存实验场景成功');
+      } else {
+        message.error('保存实验场景失败');
+      }
+    }).catch(err => {
+      message.error('保存实验场景失败');
+    })
   };
 
   run = () => {
-    console.log("运行项目");
-    const data = this.props.editor.getCurrentPage().save();
-    console.log(data);
+    this.props.dispatch({
+      type: 'experiment/runExperiment',
+      payload: {
+      }
+    });
   };
 
   render() {
@@ -50,7 +74,14 @@ class Toolbar extends React.Component {
   }
 }
 
+function mapStateToProps(state) {
+  const {experimentDetail} = state.experiment;
+  return {experimentDetail};
+}
+
+
 Toolbar.propTypes = {
   editor: PropTypes.object
 };
-export default Toolbar;
+
+export default connect(mapStateToProps)(Toolbar);

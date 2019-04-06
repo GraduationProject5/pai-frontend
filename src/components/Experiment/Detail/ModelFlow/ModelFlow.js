@@ -1,4 +1,6 @@
 import React from 'react';
+import {Spin} from 'antd';
+import { connect } from 'dva';
 import Navigator from './Navigator.js';
 import Contextmenu from './Contextmenu.js';
 import Itempanel from '../ItemPanel/Itempanel.js';
@@ -7,7 +9,7 @@ import Editor from './Editor.js';
 import Canvas from './Canvas.js';
 import styles from './ModelFlow.scss';
 
-export default class BaseFlowEditor extends Editor {
+class BaseFlowEditor extends Editor {
   componentDidMount() {
     super.componentDidMount();
     const editor = this.editor;
@@ -44,23 +46,32 @@ export default class BaseFlowEditor extends Editor {
 
   render() {
     const {curZoom, minZoom, maxZoom, selectedModel} = this.state;
-    console.log(selectedModel);
-    const mode = this.props.mode;
+    const { mode, isRunning } = this.props;
 
     return (
       <div className={styles.editor}>
         <Contextmenu editor={this.editor} selectedModel={selectedModel}/>
         <Itempanel editor={this.editor} mode={mode} className={styles.itemPanel}/>
-        <Canvas editor={this.editor} className={styles.canvas}/>
-        <div className={styles.detail}>
-          <PropertyPanel editor={this.editor} selectedModel={selectedModel} className={styles.propertyPanel}/>
-          <Navigator
-            editor={this.editor}
-            curZoom={curZoom}
-            minZoom={minZoom}
-            maxZoom={maxZoom}
-            changeZoom={this.changeZoom.bind(this)}/>
-        </div>
+        <Spin spinning={isRunning} tip="正在运行实验，请稍等" wrapperClassName={styles.spin}>
+          <Canvas editor={this.editor} className={styles.canvas}/>
+          <div className={styles.detail}>
+            <PropertyPanel editor={this.editor} selectedModel={selectedModel} className={styles.propertyPanel}/>
+            <Navigator
+              editor={this.editor}
+              curZoom={curZoom}
+              minZoom={minZoom}
+              maxZoom={maxZoom}
+              changeZoom={this.changeZoom.bind(this)}/>
+          </div>
+        </Spin>
       </div>);
   }
 }
+
+function mapStateToProps(state) {
+  const {isRunning} = state.experiment;
+  return {isRunning};
+}
+
+
+export default connect(mapStateToProps)(BaseFlowEditor);

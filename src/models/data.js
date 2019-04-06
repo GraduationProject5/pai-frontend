@@ -1,7 +1,5 @@
 import * as DataService from "../services/DataService";
 import {checkTokenVaild, sendToken} from '../services/UserService';
-import * as DataMock from '../Mock/DataMock';
-
 
 export default {
 
@@ -19,36 +17,9 @@ export default {
   },
 
   effects: {
-    * fetch({payload}, {call, put}) {  // eslint-disable-line
-      yield put({type: 'save'});
-    },
-    * createTableByColumn({payload: data}, {call, put}) {  // eslint-disable-line
-      if (checkTokenVaild()) {
-        const response = yield call(sendToken, DataService.createTableByColumn, data);
-        console.log('createTableByColumn', response);
-      } else {
-        yield put({
-          type: 'user/saveLoginModalVisible',
-          payload: {
-            loginModalVisible: true,
-          },
-        });
-      }
-    },
-    * createTableByScript({payload: data}, {call, put}) {  // eslint-disable-line
-      const response = yield call(DataService.createTableByScript, data);
-      console.log('createTableByScript', response);
-    },
-    * uploadData({payload: data}, {call, put}) {  // eslint-disable-line
-      const response = yield call(DataService.uploadData, data);
-      console.log('uploadData', response);
-    },
     * getAllTable({payload}, {call, put}) {  // eslint-disable-line
       if (checkTokenVaild()) {
-        // const response = yield call(DataService.allTable, data);
-        // console.log('getAllTable', response);
         const response = yield call(sendToken, DataService.allTable);
-        console.log('getAllTable', response);
         yield put({
           type: 'saveDataTables',
           payload: {
@@ -76,11 +47,10 @@ export default {
     },
     * getTableData({payload: {tableName}}, {call, put}) {  // eslint-disable-line
       const response = yield call(sendToken, DataService.tableData, tableName);
-      console.log('getTableData', response);
       yield put({
         type: 'saveTableData',
         payload: {
-          tableData: response,
+          tableData: response.list || [],
         },
       });
     },

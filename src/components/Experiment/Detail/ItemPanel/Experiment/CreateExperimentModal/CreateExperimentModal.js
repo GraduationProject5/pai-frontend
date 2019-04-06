@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from "prop-types";
-import {Form, Modal, Input} from 'antd';
+import {Form, Modal, Input, message} from 'antd';
 import { connect } from 'dva';
 import styles from './CreateExperimentModal.scss';
+import {sendToken} from "../../../../../../services/UserService";
+import {create} from "../../../../../../services/ExperimentService";
 
 const FormItem = Form.Item;
 
@@ -16,9 +18,22 @@ class CreateExperimentModal extends React.Component {
           name: values.name,
           description: values.desc
         };
-        this.props.dispatch({
-          type: 'experiment/create',
-          payload: data,
+        sendToken(create, data).then(response => {
+          console.log('create', response);
+          if (response && response.result) {
+            message.success('创建实验成功');
+            // 清空表单数据
+            this.props.form.resetFields();
+            this.props.setModalVisible(false);
+            // 更新实验列表
+            this.props.dispatch({
+              type: 'experiment/getAllExperiment'
+            });
+          } else {
+            message.error('创建实验失败');
+          }
+        }).catch(err => {
+          message.error('创建实验失败');
         });
       }
     });

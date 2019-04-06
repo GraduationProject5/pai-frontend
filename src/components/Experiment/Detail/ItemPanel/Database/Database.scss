@@ -8,8 +8,13 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  background-color: #F3F3F3;
+  z-index: 2;
+  font-size: $small-font-size;
 
   .tableList {
+    flex: 1;
+    overflow-y: scroll;
 
     .tableItem {
       height: 48px;

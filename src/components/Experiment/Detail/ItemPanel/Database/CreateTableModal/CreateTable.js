@@ -2,6 +2,8 @@ import React from 'react';
 import {Form, Icon, Input, Select, Row, Col, Checkbox, Tabs} from 'antd';
 import {connect} from 'dva';
 import styles from "./CreateTable.scss";
+import {checkTokenVaild, sendToken} from "../../../../../../services/UserService";
+import * as DataService from "../../../../../../services/DataService";
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -64,7 +66,7 @@ class CreateTable extends React.Component {
       });
       return isValidated;
     } else {
-      this.props.form.validateFields(['script'], (err, values) => {
+      this.props.form.validateFields(['tableName', 'script'], (err, values) => {
         if (!err) {
           // TODO 此时后台如何获取表名
           // this.props.changeTableName(values.tableName);
@@ -78,40 +80,71 @@ class CreateTable extends React.Component {
   handleColumns = (tableFields) => {
     const columnMap = {};
     tableFields.map((tableField, index) => {
-      if (tableField.split) {
+      if (tableField.primary) {
         tableField.description = 'NOT NULL PRIMARY KEY'
-      } else {
+      } else if (tableField.notNull) {
         tableField.description = 'NOT NULL'
+      } else {
+        tableField.description = '';
       }
-      delete tableField.split;
+      delete tableField.primary;
+      delete tableField.notNull;
       columnMap[index] = tableField;
     });
 
     return columnMap;
   };
 
-  submit = () => {
-    console.log("submit");
+  submit = async () => {
     if (this.state.mode === 'field') {
-      this.props.form.validateFields(['tableName', 'description', 'tableStructure', 'tableFields'], (err, values) => {
-        console.log("err", err);
-        if (!err) {
-          const columnMap = this.handleColumns(values.tableFields);
-          console.log("CreateTable", values);
-          console.log("columnMap", columnMap);
-          const data = {
-            tableName: values.tableName,
-            description: values.description,
-            requestBody: columnMap
-          };
-          this.props.dispatch({
-            type: 'data/createTableByColumn',
-            payload: data,
-          });
-        }
+      return await new Promise((resolve, reject) => {
+        this.props.form.validateFields(['tableName', 'description', 'tableStructure', 'tableFields'], async (err, values) => {
+          if (!err) {
+            const columnMap = this.handleColumns(values.tableFields);
+            const data = {
+              tableName: values.tableName,
+              description: values.description,
+              requestBody: columnMap
+            };
+            if (checkTokenVaild()) {
+              const response = await sendToken(DataService.createTableByColumn, data);
+              resolve(!!(response && response.result));
+            } else {
+              this.props.dispatch({
+                type: 'user/saveLoginModalVisible',
+                payload: {
+                  loginModalVisible: true,
+                },
+              });
+              resolve(false);
+            }
+          } else resolve(false);
+        });
       });
     } else {
-
+      return await new Promise((resolve, reject) => {
+        this.props.form.validateFields(['tableName', 'script'], async (err, values) => {
+          if (!err) {
+            const data = {
+              tableName: values.tableName,
+              sql: values.script,
+            };
+            if (checkTokenVaild()) {
+              const response = await sendToken(DataService.createTableByScript, data);
+              console.log("createTableByScript", response);
+              resolve(!!(response && response.result));
+            } else {
+              this.props.dispatch({
+                type: 'user/saveLoginModalVisible',
+                payload: {
+                  loginModalVisible: true,
+                },
+              });
+              resolve(false);
+            }
+          } else resolve(false);
+        });
+      });
     }
   };
 
@@ -142,7 +175,7 @@ class CreateTable extends React.Component {
         key={tableFieldKey}
       >
         <Row gutter={24} type="flex" align="middle">
-          <Col span={12}>
+          <Col span={11}>
             {getFieldDecorator(`tableFields[${tableFieldKey}].columnName`, {
               validateTrigger: ['onChange', 'onBlur'],
               rules: [{
@@ -157,11 +190,12 @@ class CreateTable extends React.Component {
           <Col span={5}>
             {getFieldDecorator(`tableFields[${tableFieldKey}].columnType`, {
               validateTrigger: ['onChange', 'onBlur'],
-              initialValue: "BIGINT",
+              initialValue: "INT",
             })(
               <Select
                 size="small"
               >
+                <Option value="INT">int</Option>
                 <Option value="BIGINT">bigint</Option>
                 <Option value="DOUBLE">double</Option>
                 <Option value="DECIMAL">decimal</Option>
@@ -171,11 +205,22 @@ class CreateTable extends React.Component {
               </Select>
             )}
           </Col>
-          <Col span={5} style={{textAlign: 'center'}}>
-            {getFieldDecorator(`tableFields[${tableFieldKey}].split`, {
+          <Col span={3} style={{textAlign: 'center'}}>
+            {getFieldDecorator(`tableFields[${tableFieldKey}].primary`, {
               validateTrigger: ['onChange', 'onBlur'],
               rules: [{
-                message: "是否分区字段",
+                message: "主键",
+                type: 'boolean'
+              }],
+            })(
+              <Checkbox/>
+            )}
+          </Col>
+          <Col span={3} style={{textAlign: 'center'}}>
+            {getFieldDecorator(`tableFields[${tableFieldKey}].notNull`, {
+              validateTrigger: ['onChange', 'onBlur'],
+              rules: [{
+                message: "非空",
                 type: 'boolean'
               }],
             })(
@@ -218,14 +263,17 @@ class CreateTable extends React.Component {
             rules: [{required: true, message: '列不能为空', validator: this.handleCheckFields}],
           })(
             <Row gutter={24}>
-              <Col span={12}>
+              <Col span={11}>
                 <span>列名</span>
               </Col>
               <Col span={5} style={{textAlign: 'left'}}>
                 <span>类型</span>
               </Col>
-              <Col span={5} style={{textAlign: 'left'}}>
-                <span>是否分区字段</span>
+              <Col span={3} style={{textAlign: 'left'}}>
+                <span>主键</span>
+              </Col>
+              <Col span={3} style={{textAlign: 'left'}}>
+                <span>非空</span>
               </Col>
               <Col span={2}>
                 <Icon type="plus-circle" onClick={this.add} style={{color: '#34bf49'}} className={styles.iconBtn}/>
@@ -238,6 +286,13 @@ class CreateTable extends React.Component {
 
     const createTableByScript =
       <Form className={styles.form} layout="vertical">
+        <FormItem label="表名">
+          {getFieldDecorator('tableName', {
+            rules: [{required: true, message: '请输入表名'}],
+          })(
+            <Input placeholder="请输入表名"/>,
+          )}
+        </FormItem>
         <FormItem>
           {getFieldDecorator('script', {
             rules: [{required: true, message: '请输入脚本命令'}],

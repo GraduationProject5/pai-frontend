@@ -32,7 +32,7 @@ class Database extends React.Component {
       <div className={stylesDatabase.container}>
         <div className={stylesDatabase.tableList}>
           {
-            dataTables.map((table) => {
+            dataTables && dataTables.map((table) => {
               return (
                 <div className={stylesDatabase.tableItem} key={table.tableID}>
                   <span className={`${styles.item} getItem`}

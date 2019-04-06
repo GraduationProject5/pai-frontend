@@ -44,7 +44,7 @@ class LoginModal extends React.Component {
         footer={null}
         width={500}
         wrapClassName={styles.modal}
-        onCancel={() => setModalVisible(false)}
+        onCancel={() => setModalVisible(false, 'login')}
       >
         <div className={styles.flip_box}>
           <LoginForm visible={isLoginVisible} goTo={this.gotoRegister} />

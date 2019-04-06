@@ -17,32 +17,6 @@ export function getDataSet(data, token) {
 }
 
 
-
-/**
- * 读取组件场景
- */
-export function getScenario(experimentId, token) {
-  return request(`${SCENARIO_API}getScenario?experimentID=${experimentId}`, {
-    headers: {
-      'token': token
-    }
-  });
-}
-
-/**
- * 保存组件场景
- */
-export function save(data, token) {
-  return request(`${SCENARIO_API}saveScenario?experimentID=${data.experimentId}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'token': token
-    },
-    body: JSON.stringify(data.requestBody),
-  });
-}
-
 /**
  *
  * 保存组件参数
@@ -51,13 +25,13 @@ export function save(data, token) {
  * @returns {*}
  */
 export function saveSettingsForNode(data, token) {
-  return request(`${SCENARIO_API}saveSettingsForNode?nodeID=${data.nodeId}`, {
+  return request(`${SCENARIO_API}saveSettingsForNode`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'token': token
     },
-    body: JSON.stringify(data.settings),
+    body: JSON.stringify(data),
   });
 }
 

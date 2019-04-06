@@ -29,7 +29,6 @@ class Header extends React.Component {
   };
 
   handleLogout = () => {
-    console.log('退出登录');
     this.props.dispatch({
       type: 'user/logout',
     });
@@ -37,7 +36,6 @@ class Header extends React.Component {
 
   render() {
     const { location, userInfo } = this.props;
-    console.log('Header, userInfo:', userInfo);
     return (
       <div className={styles.header}>
         <Menu

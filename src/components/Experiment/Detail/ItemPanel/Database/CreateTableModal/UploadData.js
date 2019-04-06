@@ -1,6 +1,8 @@
 import React from 'react';
 import {Form, Button, message, Upload, Icon, Row, Col, Input} from 'antd';
 import styles from './UploadData.scss'
+import {sendToken} from "../../../../../../services/UserService";
+import {uploadData} from "../../../../../../services/DataService";
 
 const FormItem = Form.Item;
 
@@ -32,7 +34,6 @@ class UploadData extends React.Component {
             dataFile: file,
             fileList
           });
-          message.success("上传文件成功");
         } else if (file.status === 'error') {
           message.error("上传文件失败");
         } else {
@@ -66,22 +67,28 @@ class UploadData extends React.Component {
     return isValidated;
   };
 
-  submit = () => {
-    this.props.form.validateFields((err, values) => {
-      console.log("err", err);
-      console.log("UploadData", values);
-      if (!err) {
-        const data = {
-          tableName: this.props.tableName,
-          file: this.state.dataFile,
-          rowSepChar: values.rowSepChar,
-          colSepChar: values.colSepChar
-        };
-        this.props.dispatch({
-          type: 'data/uploadData',
-          payload: data,
-        });
-      }
+  submit = async () => {
+    return await new Promise(resolve => {
+      this.props.form.validateFields((err, values) => {
+        console.log("err", err);
+        console.log("UploadData values", values);
+        if (!err) {
+          const data = {
+            tableName: this.props.tableName,
+            file: this.state.dataFile,
+            rowSepChar: values.rowSepChar,
+            colSepChar: values.colSepChar
+          };
+          sendToken(uploadData, data).then(response => {
+            console.log("UploadData response", response);
+            resolve(!!(response && response.result));
+          }).catch(err => {
+            resolve(false);
+          });
+        } else {
+          resolve(false);
+        }
+      });
     });
   };
 

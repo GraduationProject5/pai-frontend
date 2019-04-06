@@ -31,7 +31,7 @@ class Itempanel extends React.Component {
     const mode = this.props.mode;
     const ModeModule = this.module[mode];
     return (
-      <div className={`${styles.container} ${this.props.className}`} ref={el => { this.itempanelContainer = el; }}>
+      <div className={`${this.props.className}`} ref={el => { this.itempanelContainer = el; }}>
         <ModeModule />
       </div>);
   }

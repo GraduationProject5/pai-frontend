@@ -9,7 +9,7 @@ const SCENARIO_API = '/api/scenario/';
  * @returns {*}
  */
 export function getDataSet(data, token) {
-  return request(`${SCENARIO_API}getDataSet?experimentID=${data.experimentId}&nodeID=${data.nodeId}`, {
+  return request(`${SCENARIO_API}getDataSet?experimentID=${data.experimentId}&nodeNo=${data.nodeNo}`, {
     headers: {
       'token': token
     }

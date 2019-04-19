@@ -60,16 +60,16 @@ Flow.registerNode('model-card', {
         fill: 'rgba(0,0,0,0.65)'
       }
     });
-    // 状态 logo
-    group.addShape('image', {
-      attrs: {
-        img: this.state_icon_url,
-        x: x + 158,
-        y: y + 12,
-        width: 16,
-        height: 16
-      }
-    });
+    // // 状态 logo
+    // group.addShape('image', {
+    //   attrs: {
+    //     img: this.state_icon_url,
+    //     x: x + 158,
+    //     y: y + 12,
+    //     width: 16,
+    //     height: 16
+    //   }
+    // });
     return keyShape;
   },
   // 设置锚点
@@ -91,7 +91,6 @@ export function registerComponents(components) {
         label: component.componentName,
         color_type: '#1890FF',
         typeImgUrl: componentImgUrl,
-        state_icon_url: 'https://gw.alipayobjects.com/zos/rmsportal/MXXetJAxlqrbisIuZxDO.svg',
         // 设置锚点
         anchor: [
           [0.5, 0, {
@@ -116,7 +115,6 @@ export function registerDataTable() {
     label: '读数据表',
     color_type: '#FAAD14',
     typeImgUrl: databaseImgUrl,
-    state_icon_url: 'https://gw.alipayobjects.com/zos/rmsportal/MXXetJAxlqrbisIuZxDO.svg',
     // 设置锚点
     anchor: [
       [0.5, 1, {

@@ -31,9 +31,15 @@ export default {
             }
           });
         } else {
-          message.error('获取组件结果失败');
+          yield put({
+            type: 'saveResult',
+            payload: {
+              result: {}
+            }
+          });
         }
       } else {
+        message.error('获取组件结果失败');
         yield put({
           type: 'user/saveLoginModalVisible',
           payload: {

@@ -39,7 +39,7 @@ class Contextmenu extends React.Component {
       this.props.dispatch({
         type: 'component/getResult',
         payload: {
-          nodeId: +model.nodeid,
+          nodeNo: model.id,
         }
       });
     }

@@ -77,7 +77,7 @@ class PropertyPanel extends React.Component {
 
   changeComponentSettings = () => {
     const data = {
-      nodeID: +this.props.selectedModel.nodeid,
+      nodeNo: this.props.selectedModel.id,
       settings: this.state.settings
     };
     sendToken(saveSettingsForNode, data);

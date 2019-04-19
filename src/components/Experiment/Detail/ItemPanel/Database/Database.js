@@ -1,10 +1,12 @@
 import React from 'react';
-import {Icon} from 'antd';
+import {Icon, Popconfirm, message} from 'antd';
 import {connect} from 'dva';
 import styles from '../Itempanel.scss'
 import stylesDatabase from './Database.scss';
 import CreateTableModal from './CreateTableModal/CreateTableModal';
 import databaseImgUrl from '../../../../../assets/img/database.svg';
+import {dropTable} from "../../../../../services/DataService";
+import {sendToken} from "../../../../../services/UserService";
 
 class Database extends React.Component {
 
@@ -25,6 +27,19 @@ class Database extends React.Component {
     this.setState({modalVisible: visible});
   };
 
+  // deleteTable = (id) => {
+  //   sendToken(dropTable, id).then(response => {
+  //       console.log("delete", response);
+  //       this.props.dispatch({
+  //         type: 'data/getAllTable'
+  //       });
+  //       message.success("删除成功")
+  //   }).catch(err => {
+  //     console.log("delete err", err);
+  //     message.error("删除失败")
+  //   });
+  // };
+
   render() {
     const modalVisible = this.state.modalVisible;
     const {dataTables} = this.props;
@@ -44,6 +59,11 @@ class Database extends React.Component {
                         data-size="170*34">
                     <img alt="type" src={databaseImgUrl} className={styles.typeImg}/>{table.tableName}
                   </span>
+                  {/*<Popconfirm title="确定删除该数据表?" onConfirm={() => this.deleteTable(table.tableID)}*/}
+                              {/*okText="确定" cancelText="取消"*/}
+                              {/*>*/}
+                    {/*<Icon type="delete" style={{ marginLeft: 8}}/>*/}
+                  {/*</Popconfirm>*/}
                 </div>
               );
             })

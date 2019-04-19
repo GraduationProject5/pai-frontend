@@ -23,7 +23,7 @@ class Toolbar extends React.Component {
   save = () => {
     const data = this.props.editor.getCurrentPage().save();
     const nodes = data.nodes;
-    nodes.map(node => {
+    nodes && nodes.map(node => {
       if (node.settings) {
         node.settings = JSON.parse(node.settings);
       }

@@ -84,6 +84,14 @@ export function tableData(tableName, token) {
   });
 }
 
+export function dropTable(tableID, token) {
+  return request(`${DATA_API}dropTable?tableID=${tableID}`, {
+    headers: {
+      token: token,
+    },
+  });
+}
+
 
 
 

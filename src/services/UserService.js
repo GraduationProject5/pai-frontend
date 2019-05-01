@@ -7,7 +7,8 @@ export function login(user) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-    }
+    },
+    credentials: 'include',
   });
 }
 
@@ -40,6 +41,7 @@ export function logout(token) {
     headers: {
       token: token,
     },
+    credentials: 'include',
   });
 }
 

@@ -4,6 +4,7 @@ import {connect} from 'dva';
 import stylesExperiment from './Experiment.scss';
 import CreateExperimentModal from "./CreateExperimentModal/CreateExperimentModal";
 import experimentImgUrl from "../../../../../assets/img/experiment.svg";
+import ExperimentList from "./ExperimentList";
 
 class Experiment extends React.Component {
 
@@ -39,20 +40,7 @@ class Experiment extends React.Component {
 
     return (
       <div className={stylesExperiment.container}>
-        <div className={stylesExperiment.experimentList}>
-          {
-            experiments && experiments.map((experiment) => {
-              return (
-                <div className={stylesExperiment.item} key={experiment.experimentID}
-                     tabIndex={experiment.experimentID}
-                     style={experimentDetail.experimentID === experiment.experimentID ? { backgroundColor: '#D9D1DE'} : null}
-                      onClick={() => this.getExperimentDetail(experiment.experimentID)}>
-                  <img alt="type" src={experimentImgUrl} className={stylesExperiment.typeImg}/>{experiment.experimentName}
-                </div>
-              );
-            })
-          }
-        </div>
+        <ExperimentList experiments={experiments} experimentDetail={experimentDetail}/>
         <button className={stylesExperiment.createExperimentBtn}
                 onClick={() => this.setCreateExperimentModalVisible(true)}>
           <Icon style={{marginRight: 8}} type="plus-circle"/>新建实验

@@ -7,7 +7,6 @@ import defaultAvatar from '../../assets/img/default-avatar.png';
 import LoginModal from '../../components/LoginModal/LoginModal';
 
 const SubMenu = Menu.SubMenu;
-const MenuItemGroup = Menu.ItemGroup;
 const MenuItem = Menu.Item;
 
 class Header extends React.Component {

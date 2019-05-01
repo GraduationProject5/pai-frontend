@@ -50,7 +50,7 @@ export default {
         const sessionStorage = window.sessionStorage;
         sessionStorage.setItem('token', response.token);
       } else if (response.message) {
-        message.error(USER_MESSAGE[response.message]);
+        message.error(USER_MESSAGE[response.message] || response.message);
       } else {
         message.error('登录失败');
       }

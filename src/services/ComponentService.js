@@ -12,7 +12,8 @@ export function getDataSet(data, token) {
   return request(`${SCENARIO_API}getDataSet?experimentID=${data.experimentId}&nodeNo=${data.nodeNo}`, {
     headers: {
       'token': token
-    }
+    },
+    credentials: 'include',
   });
 }
 
@@ -32,6 +33,7 @@ export function saveSettingsForNode(data, token) {
       'token': token
     },
     body: JSON.stringify(data),
+    credentials: 'include',
   });
 }
 

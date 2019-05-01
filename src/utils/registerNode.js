@@ -107,8 +107,9 @@ export function registerComponents(components) {
   })
 }
 
+
 /**
- * 注册数据源
+ * 注册数据表源
  */
 export function registerDataTable() {
   Flow.registerNode('read-data-table', {
@@ -125,3 +126,19 @@ export function registerDataTable() {
 }
 
 
+/**
+ * 注册图片源
+ */
+export function registerDataImage() {
+  Flow.registerNode('read-data-image', {
+    label: '读图片',
+    color_type: '#FAAD14',
+    typeImgUrl: databaseImgUrl,
+    // 设置锚点
+    anchor: [
+      [0.5, 1, {
+        type: 'output'
+      }]
+    ]
+  }, 'model-card');
+}

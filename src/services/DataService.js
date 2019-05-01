@@ -13,6 +13,7 @@ export function createTableByColumn(data, token) {
       token: token,
     },
     body: JSON.stringify(data.requestBody),
+    credentials: 'include',
   });
 }
 
@@ -27,6 +28,7 @@ export function createTableByScript(data, token) {
       'Content-Type': 'application/json',
       token: token,
     },
+    credentials: 'include',
   });
 }
 
@@ -43,6 +45,7 @@ export function uploadData(data, token) {
       token: token,
     },
     body: formdata,
+    credentials: 'include',
   });
 }
 
@@ -55,6 +58,7 @@ export function allTable(token) {
     headers: {
       token: token,
     },
+    credentials: 'include',
   });
 }
 
@@ -67,6 +71,7 @@ export function tableDetail(tableName, token) {
     headers: {
       token: token,
     },
+    credentials: 'include',
   });
 }
 
@@ -81,6 +86,7 @@ export function tableData(tableName, token) {
     headers: {
       token: token,
     },
+    credentials: 'include',
   });
 }
 
@@ -89,6 +95,7 @@ export function dropTable(tableID, token) {
     headers: {
       token: token,
     },
+    credentials: 'include',
   });
 }
 

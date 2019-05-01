@@ -13,6 +13,7 @@ export function create(data, token) {
     headers: {
       token: token
     },
+    credentials: 'include',
   });
 }
 
@@ -25,6 +26,7 @@ export function updateExperimentInfo(data, token) {
       token: token
     },
     body: JSON.stringify(data.requestBody),
+    credentials: 'include',
   });
 }
 
@@ -38,6 +40,7 @@ export function allExperiment(token) {
     headers: {
       token: token,
     },
+    credentials: 'include',
   });
 }
 
@@ -49,6 +52,7 @@ export function getExperimentDetail(id, token) {
     headers: {
       token: token,
     },
+    credentials: 'include',
   });
 }
 
@@ -63,6 +67,7 @@ export function save(data, token) {
       'token': token
     },
     body: JSON.stringify(data),
+    credentials: 'include',
   });
 }
 
@@ -70,6 +75,14 @@ export function save(data, token) {
 /**
  * 运行实验
  */
-export function run() {
-
+export function run(data, token) {
+  return request(`${EXPERIMENT_API}executeTextAnalysis?tableName=${data.tableName}&target=${data.target}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'token': token
+    },
+    body: JSON.stringify(data.requestBody),
+    credentials: 'include',
+  });
 }

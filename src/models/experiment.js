@@ -30,7 +30,6 @@ export default {
   effects: {
     * registerNode({payload: data}, {call, put, select}) {  // eslint-disable-line
       const response = yield call(getComponents);
-      console.log('registerNode', response);
       const experiment = yield select(state => state.experiment);
       if (experiment.components.length === 0) {
         RegisterNode.registerComponents(response);
@@ -45,7 +44,6 @@ export default {
     },
     * getAllExperiment({payload}, {call, put}) {  // eslint-disable-line
       const response = yield call(sendToken, ExperimentService.allExperiment);
-      console.log('getAllExperiment', response);
       yield put({
         type: 'saveExperiments',
         payload: {
@@ -73,7 +71,6 @@ export default {
     * getExperimentDetail({payload: {id}}, {call, put}) {  // eslint-disable-line
       if(checkTokenVaild()) {
         const response = yield call(sendToken, ExperimentService.getExperimentDetail, id);
-        console.log('getExperimentDetail', response);
         if (response && response.experimentID)  {
           handleSettings(response.nodes);
           yield put({
@@ -94,7 +91,7 @@ export default {
         });
       }
     },
-    * runExperiment({payload: {id}}, {call, put}) {  // eslint-disable-line
+    * runExperiment({payload: data}, {call, put}) {  // eslint-disable-line
       if(checkTokenVaild()) {
         yield put({
           type: 'saveRunning',
@@ -102,8 +99,10 @@ export default {
             isRunning: true,
           },
         });
-        const response = yield call(sendToken, ExperimentService.allExperiment);
-        if (response && response.experimentID)  {
+        console.log("runExperiment, data", data);
+        const response = yield call(sendToken, ExperimentService.run, data);
+        console.log("runExperiment, response", response);
+        if (response && response.result)  {
           message.success("运行实验成功");
         } else {
           message.error("运行实验失败");

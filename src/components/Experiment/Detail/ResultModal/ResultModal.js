@@ -27,8 +27,8 @@ class ResultModal extends React.Component {
     });
     // 如果没有 id 属性，添加 id 属性，React 要求
     data.map((item, index) => {
-      if (!item.id) {
-        item.id = index
+      if (!item.feTableIndex) {
+        item.feTableIndex = index
       }
       return item;
     });
@@ -54,9 +54,9 @@ class ResultModal extends React.Component {
       >
         {
           kind === 'table' ?
-            <ResultTable table={this.handleTableData(tableData)}/>
+            <ResultTable table={this.handleTableData(tableData)} rowKey="feTableIndex"/>
             : result.type === 'table' ?
-            <ResultTable table={result}/> : null
+            <ResultTable table={result} rowKey="id"/> : null
         }
       </Modal>
     );

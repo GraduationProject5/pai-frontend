@@ -1,0 +1,19 @@
+@import "../../../../assets/scss/mixin";
+@import "../../../../assets/scss/variables";
+@import "../../../../assets/scss/base";
+
+.modal {
+  //@include center-modal;
+
+  .container {
+
+    .content {
+      margin-top: 24px;
+    }
+
+    .action {
+      margin-top: 24px;
+    }
+  }
+
+}

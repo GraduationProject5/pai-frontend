@@ -6,8 +6,22 @@ import PropTypes from 'prop-types';
 import styles from './Toolbar.scss';
 import {save} from "../../../../services/ExperimentService";
 import {sendToken} from "../../../../services/UserService";
+import RunModal from "./RunModal/RunModal";
 
 class Toolbar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      modalVisible: false,
+      experimentData: {}
+    };
+  }
+
+  setModalVisible = (visible) => {
+    this.setState({modalVisible: visible});
+  };
+
+
   createToolbar(container) {
     return new G6Editor.Toolbar({
       container
@@ -46,14 +60,27 @@ class Toolbar extends React.Component {
   };
 
   run = () => {
-    this.props.dispatch({
-      type: 'experiment/runExperiment',
-      payload: {
+    const data = this.props.editor.getCurrentPage().save();
+    const nodes = data.nodes;
+    nodes && nodes.map(node => {
+      if (node.settings) {
+        node.settings = JSON.parse(node.settings);
       }
+      return node;
+    });
+    const experimentData = {
+      ...data,
+      experimentID: this.props.experimentDetail.experimentID,
+    };
+    this.setState({
+      modalVisible: true,
+      experimentData
     });
   };
 
   render() {
+    const {modalVisible, experimentData} = this.state;
+
     return (
       <div className={styles.container} ref={el => {
         this.toolbarContainer = el;
@@ -70,6 +97,7 @@ class Toolbar extends React.Component {
         <Icon type="pause" data-command="resetZoom" className={`${styles.command} command`} title="实际尺寸"/>
         <span className={styles.separator}/>
         <Icon type="table" data-command="multiSelect" className={`${styles.command} command`} title="多选"/>
+        <RunModal visible={modalVisible} setModalVisible={this.setModalVisible} experimentData={experimentData}/>
       </div>);
   }
 }

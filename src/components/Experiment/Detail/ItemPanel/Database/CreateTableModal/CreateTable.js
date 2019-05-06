@@ -68,8 +68,7 @@ class CreateTable extends React.Component {
     } else {
       this.props.form.validateFields(['tableName', 'script'], (err, values) => {
         if (!err) {
-          // TODO 此时后台如何获取表名
-          // this.props.changeTableName(values.tableName);
+          this.props.changeTableName(values.tableName);
           isValidated = true;
         }
       });

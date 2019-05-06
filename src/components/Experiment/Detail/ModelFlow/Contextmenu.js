@@ -43,7 +43,6 @@ class Contextmenu extends React.Component {
         }
       });
     }
-
   };
 
   showResultModal = (visible, nodeid) => {

@@ -3,7 +3,6 @@ import {Icon} from 'antd';
 import {connect} from 'dva';
 import stylesExperiment from './Experiment.scss';
 import CreateExperimentModal from "./CreateExperimentModal/CreateExperimentModal";
-import experimentImgUrl from "../../../../../assets/img/experiment.svg";
 import ExperimentList from "./ExperimentList";
 
 class Experiment extends React.Component {
@@ -23,15 +22,6 @@ class Experiment extends React.Component {
 
   setCreateExperimentModalVisible = (visible) => {
     this.setState({modalVisible: visible});
-  };
-
-  getExperimentDetail = (id) => {
-    this.props.dispatch({
-      type: 'experiment/getExperimentDetail',
-      payload: {
-        id: id
-      }
-    });
   };
 
   render() {

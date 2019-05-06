@@ -7,6 +7,7 @@ import styles from './PropertyPanel.scss';
 import {saveSettingsForNode} from "../../../../services/ComponentService";
 import {sendToken} from "../../../../services/UserService";
 import {updateExperimentInfo} from "../../../../services/ExperimentService";
+import PictureUpload from './PictureUpload/PictureUpload';
 
 const TextArea = Input.TextArea;
 const TabPane = Tabs.TabPane;
@@ -210,12 +211,21 @@ class PropertyPanel extends React.Component {
     )
   };
 
+  renderPictureUpload = () => {
+    return <PictureUpload experiment={this.props.experimentDetail}/>
+  };
+
   render() {
     const {selectedModel, className} = this.props;
     let kind = selectedModel && selectedModel.kind;
+    console.log(selectedModel);
     let renderProperty;
     if (kind === 'component') {
-      renderProperty = this.renderComponentProperty;
+      if (selectedModel && selectedModel.shape === 'read_pic') {
+        renderProperty = this.renderPictureUpload;
+      }  else {
+        renderProperty = this.renderComponentProperty;
+      }
     } else if (kind === 'table') {
       renderProperty = this.renderTableProperty;
     } else {

@@ -9,7 +9,7 @@ import Editor from './Editor.js';
 import Canvas from './Canvas.js';
 import styles from './ModelFlow.scss';
 
-class BaseFlowEditor extends Editor {
+class ModelFlow extends Editor {
   componentDidMount() {
     super.componentDidMount();
     const editor = this.editor;
@@ -74,4 +74,4 @@ function mapStateToProps(state) {
 }
 
 
-export default connect(mapStateToProps)(BaseFlowEditor);
+export default connect(mapStateToProps)(ModelFlow);

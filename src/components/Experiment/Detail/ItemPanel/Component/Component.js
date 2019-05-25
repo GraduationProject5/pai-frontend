@@ -24,7 +24,7 @@ class Component extends React.Component {
         <TreeNode className={styles.leaf} title={item} key={component.componentID}/>);
     } else {
       return (
-        <TreeNode className={styles.parent} title={component.sectionName} key={component.sectionID}>
+        <TreeNode className={styles.parent} title={component.sectionName} key={`section${component.sectionID}`}>
           {
             component.components.map((child) => {
               return this.renderTree(child);

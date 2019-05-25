@@ -5,7 +5,7 @@
    },
    "proxy": {
      "/api": {
-       "target": "http://47.102.152.224:13100/",
+       "target": "http://47.102.152.224:13100/api/",
        "changeOrigin": true,
        "pathRewrite": { "^/api" : "" }
      }

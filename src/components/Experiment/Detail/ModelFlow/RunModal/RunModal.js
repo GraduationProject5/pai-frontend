@@ -11,24 +11,42 @@ class RunModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      type: '',   // 实验类别
+      type: 'text',   // 实验类别
     }
   }
 
   handleSubmit = () => {
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        this.props.setModalVisible(false);
-        this.props.dispatch({
-          type: 'experiment/runExperiment',
-          payload: {
-            tableName: values.tableName,
-            target: values.target,
-            requestBody: this.props.experimentData
-          }
-        });
-      }
-    });
+    const type = this.state.type;
+    console.log("experiment", this.props.experimentData);
+    if (type === 'picture') {
+      this.props.form.validateFields(['batch', 'epoach'], (err, values) => {
+        if (!err) {
+          this.props.setModalVisible(false);
+          this.props.dispatch({
+            type: 'experiment/runPicExperiment',
+            payload: {
+              batch: values.batch,
+              epoach: values.epoach,
+              expName: this.props.experimentData.experimentName
+            }
+          });
+        }
+      });
+    } else {
+      this.props.form.validateFields(['tableName', 'target'], (err, values) => {
+        if (!err) {
+          this.props.setModalVisible(false);
+          this.props.dispatch({
+            type: 'experiment/runExperiment',
+            payload: {
+              tableName: values.tableName,
+              target: values.target,
+              requestBody: this.props.experimentData
+            }
+          });
+        }
+      });
+    }
   };
 
   cancel = () => {
@@ -77,15 +95,23 @@ class RunModal extends React.Component {
               </FormItem>
             </Form>
           </TabPane>
-          <TabPane tab="图片分类" key="image">
-            {/*<Form>*/}
-              {/*<FormItem label="文件夹名">*/}
-                {/*{getFieldDecorator('dirName', {*/}
-                  {/*rules: [{required: true, message: '请输入数据表名'}],*/}
-                {/*})(*/}
-                  {/*<Input placeholder="请输入数据表名"/>,*/}
-                {/*)}*/}
-            {/*</Form>*/}
+          <TabPane tab="图片分类" key="picture">
+            <Form>
+              <FormItem label="batch">
+                {getFieldDecorator('batch', {
+                  rules: [{required: true, message: '请输入batch'}],
+                })(
+                  <Input placeholder="请输入batch"/>,
+                )}
+              </FormItem>
+              <FormItem label="epoach">
+                {getFieldDecorator('epoach', {
+                  rules: [{required: true, message: '请输入epoach'}],
+                })(
+                  <Input placeholder="请输入epoach"/>,
+                )}
+              </FormItem>
+            </Form>
           </TabPane>
         </Tabs>
       </Modal>

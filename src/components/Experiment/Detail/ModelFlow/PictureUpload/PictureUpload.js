@@ -1,7 +1,9 @@
 import React from 'react';
-import {Modal, Button, Form, Upload, Icon, Input} from 'antd';
+import {Modal, Button, Form, Upload, Icon, Input, message} from 'antd';
 import {connect} from 'dva';
 import styles from "./PictureUpload.scss";
+import {sendToken} from "../../../../../services/UserService";
+import {createTrainDir, uploadPic} from "../../../../../services/DataService";
 
 const FormItem = Form.Item;
 
@@ -29,7 +31,40 @@ class PictureUpload extends React.Component {
   handleSubmit = () => {
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log("handleSubmit", values)
+        console.log("handleSubmit", values, this.props.experiment);
+        const trainDirData= {
+          expName: this.props.experiment.experimentName,
+          dirName: values.dirName
+        };
+        console.log("trainDirData", trainDirData);
+        sendToken(createTrainDir, trainDirData).then(response => {
+          console.log("createTrainDir response", response);
+          if (response && response.result) {
+            const pics = values.pictures.fileList.map(file => file.originFileObj);
+            const uploadData = {
+              expName: this.props.experiment.experimentName,
+              dirName: values.dirName,
+              pics: pics
+            };
+            console.log("uploadData", uploadData);
+            sendToken(uploadPic, uploadData).then(response => {
+              if (response && response.result) {
+                message.success('上传图片成功');
+                this.props.form.resetFields();
+                this.setState({
+                  visible: false,
+                })
+              } else {
+                message.error('上传图片失败');
+              }
+            })
+          } else {
+            message.error('创建训练集文件失败');
+          }
+        }).catch(err => {
+          console.error(err);
+          message.error('创建图片源失败');
+        });
       }
     });
   };
@@ -41,11 +76,7 @@ class PictureUpload extends React.Component {
   };
 
   uploadProps = {
-    name: 'dataFile',
-    action: '//jsonplaceholder.typicode.com/posts/',
-    headers: {
-      authorization: 'authorization-text',
-    },
+    action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
     onChange: (value) => {
       console.log("handleDirChange", value);
       // if (file && file.name.indexOf(".csv") !== -1) {

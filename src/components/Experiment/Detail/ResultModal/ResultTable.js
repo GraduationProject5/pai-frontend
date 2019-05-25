@@ -1,5 +1,6 @@
 import React from 'react';
 import {Table} from 'antd';
+import styles from './ResultModal.scss';
 
 class ResultTable extends React.Component {
 
@@ -7,6 +8,7 @@ class ResultTable extends React.Component {
     const table = this.props.table;
     return (
       <Table
+        rowClassName={styles.resultTableRow}
         columns={table.paras}
         dataSource={table.data}
         rowKey={this.props.rowKey}

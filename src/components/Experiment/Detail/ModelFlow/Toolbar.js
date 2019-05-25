@@ -71,6 +71,7 @@ class Toolbar extends React.Component {
     const experimentData = {
       ...data,
       experimentID: this.props.experimentDetail.experimentID,
+      experimentName: this.props.experimentDetail.experimentName
     };
     this.setState({
       modalVisible: true,

@@ -36,12 +36,22 @@ class Contextmenu extends React.Component {
         }
       });
     } else if (model.kind === 'component' ){
-      this.props.dispatch({
-        type: 'component/getResult',
-        payload: {
-          nodeNo: model.id,
-        }
-      });
+      console.log(model);
+      if (model.shape === 'ann') {
+        this.props.dispatch({
+          type: 'component/getPicTrainResult',
+          payload: {
+            nodeNo: model.id,
+          }
+        });
+      } else {
+        this.props.dispatch({
+          type: 'component/getResult',
+          payload: {
+            nodeNo: model.id,
+          }
+        });
+      }
     }
   };
 

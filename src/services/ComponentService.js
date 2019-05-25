@@ -44,3 +44,16 @@ export function getComponents() {
   return request(`${SCENARIO_API}getSectionsAndComponents`);
 }
 
+/**
+ * 获取图片训练结果
+ */
+export function getPicTrainResult(data, token) {
+  return request(`${SCENARIO_API}getPicTrainResult?taskID=${data.taskID}&nodeNo=${data.nodeNo}&experimentID=${data.experimentId}`,
+    {
+      headers: {
+        'token': token
+      },
+      credentials: 'include',
+    });
+}
+

@@ -8,6 +8,7 @@ export default {
 
   state: {
     result: {},         // 单个组件实验结果
+    task_id: ''
   },
 
   subscriptions: {
@@ -17,12 +18,10 @@ export default {
 
   effects: {
     * getResult({payload: data}, {call, put, select}) {  // eslint-disable-line
-
       if(checkTokenVaild()) {
         const experiment = yield select(state => state.experiment);
         data.experimentId = experiment.experimentDetail.experimentID;
         const response = yield call(sendToken, ComponentService.getDataSet, data);
-        console.log('getResult', response);
         if (response && response.results) {
           yield put({
             type: 'saveResult',
@@ -48,6 +47,47 @@ export default {
         });
       }
     },
+    * getPicTrainResult({payload: data}, {call, put, select}) {  // eslint-disable-line
+      if(checkTokenVaild()) {
+        const experiment = yield select(state => state.experiment);
+        const component = yield select(state => state.component);
+        data.experimentId = experiment.experimentDetail.experimentID;
+        data.taskID= component.task_id || 43;
+        const response = yield call(sendToken, ComponentService.getPicTrainResult, data);
+        console.log('getResult', response);
+        if (response && response.results) {
+          yield put({
+            type: 'saveResult',
+            payload: {
+              result: response.results
+            }
+          });
+        } else if (response && response.result) {
+          message.info(response.result);
+          yield put({
+            type: 'saveResult',
+            payload: {
+              result: {}
+            }
+          });
+        } else {
+          yield put({
+            type: 'saveResult',
+            payload: {
+              result: {}
+            }
+          });
+        }
+      } else {
+        message.error('获取图片训练结果失败');
+        yield put({
+          type: 'user/saveLoginModalVisible',
+          payload: {
+            loginModalVisible: true,
+          },
+        });
+      }
+    },
   },
 
   reducers: {
@@ -56,6 +96,9 @@ export default {
     },
     saveResult(state, {payload: {result}}) {
       return {...state, result}
+    },
+    saveTaskID(state, {payload: {task_id}}) {
+      return {...state, task_id}
     },
   },
 

@@ -9,25 +9,40 @@ class Home extends React.Component {
     super(props);
     this.state = {
       modalVisible: false,
+      type: 1
     };
   }
 
-  setCreateExperimentModalVisible = (visible) => {
-    this.setState({modalVisible: visible});
+  setCreateExperimentModalVisible = (visible, type) => {
+    this.setState({modalVisible: visible, type});
   };
+
+  Mock = [
+    {
+      title: '文本分析',
+      desc:'本实验用于文本分析',
+      type: 1
+    },
+    {
+      title: '图片分类',
+      desc:'本实验用于图片分类',
+      type: 2
+    }];
 
   render() {
     const modalVisible = this.state.modalVisible;
+    const type = this.state.type;
+
     return (
       <div className={styles.container}>
         <div className={styles.list}>
           {
-            [1, 2, 3, 4, 5, 6, 7, 8, 9].map((template, index) => {
-              return <Template className={styles.item} key={index} createHandler={this.setCreateExperimentModalVisible}/>;
+            this.Mock.map((template, index) => {
+              return <Template data={template} className={styles.item} key={index} createHandler={this.setCreateExperimentModalVisible}/>;
             })
           }
         </div>
-        <CreateExperimentModal visible={modalVisible} setModalVisible={this.setCreateExperimentModalVisible}/>
+        <CreateExperimentModal visible={modalVisible} setModalVisible={this.setCreateExperimentModalVisible} type={type}/>
       </div>
     );
   }

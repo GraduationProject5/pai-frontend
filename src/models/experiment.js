@@ -122,6 +122,43 @@ export default {
         });
       }
     },
+    * runPicExperiment({payload: data}, {call, put}) {  // eslint-disable-line
+      if(checkTokenVaild()) {
+        yield put({
+          type: 'saveRunning',
+          payload: {
+            isRunning: true,
+          },
+        });
+        console.log("runPicExperiment, data", data);
+        const response = yield call(sendToken, ExperimentService.executePicTrain, data);
+        console.log("runPicExperiment, response", response);
+        if (response && response.task_id)  {
+          message.success("运行实验成功");
+          yield put({
+            type: 'component/saveTaskID',
+            payload: {
+              task_id: response.task_id,
+            },
+          });
+        } else {
+          message.error("运行实验失败");
+        }
+        yield put({
+          type: 'saveRunning',
+          payload: {
+            isRunning: false,
+          },
+        });
+      } else {
+        yield put({
+          type: 'user/saveLoginModalVisible',
+          payload: {
+            loginModalVisible: true,
+          },
+        });
+      }
+    },
   },
 
   reducers: {

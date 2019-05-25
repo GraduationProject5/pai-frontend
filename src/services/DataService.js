@@ -99,7 +99,40 @@ export function dropTable(tableID, token) {
   });
 }
 
+/**
+ * 创建训练集文件
+ */
+export function createTrainDir(data, token) {
+  return request(`${DATA_API}createTrainDir`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      token: token,
+    },
+    credentials: 'include',
+    body: JSON.stringify(data),
+  });
+}
 
-
+/**
+ *上传图片
+ */
+export function uploadPic(data, token) {
+  const formdata = new window.FormData();
+  formdata.append('expName', data.expName);
+  formdata.append('dirName', data.dirName);
+  const pics = data.pics;
+  for (let i = 0; i < pics.length; i++) {
+    formdata.append('pic', pics[i]);
+  }
+  return request(`${DATA_API}uploadPics`, {
+    method: 'POST',
+    headers: {
+      token: token,
+    },
+    body: formdata,
+    credentials: 'include',
+  });
+}
 
 
